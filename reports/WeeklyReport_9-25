@@ -5,7 +5,7 @@ Thomas McLinden, Rob Jajko, Sarim Kazmi, Adam Jeffery Zorgo
 - N/A
 
 # Contributions of individual team members:
-- Thomas:
+- Thomas: Thus far, I have installed Android Studio and the Gemini plugin to assist with debugging. Multiple 3D modeling softwares have been tested to export OBJ files to be used in our project. The only issue I have encounted was during testing with Blender. As of the making of this report, I am still experimenting with camera controls, applying textures, and contorting models, since Blender is a viable option. My plan for the following week is to make final decisions on what softwares will be used for my role in the project and begin the first stages of planning. I will consult with my team members and ensure we all agree before proceeding to the beginning stages of development.
 - Rob:
 - Sarim:
 - Adam:
