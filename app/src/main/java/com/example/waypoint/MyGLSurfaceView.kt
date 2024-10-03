@@ -16,6 +16,8 @@ class MyGLSurfaceView(context: Context) : GLSurfaceView(context) {
         // Create an OpenGL ES 3.0 context
         setEGLContextClientVersion(3)
 
+        setEGLConfigChooser(8, 8, 8, 8, 16, 8); // Set the stencil size
+
         // Set the Renderer for drawing on the GLSurfaceView
         renderer = MyGLRenderer(context)
         setRenderer(renderer)
