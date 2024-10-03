@@ -4,11 +4,13 @@ import android.content.Context
 import android.opengl.GLES20
 import java.nio.charset.Charset
 
-class ShaderProgram(context: Context) {
+class ShaderProgram(vertexShaderCode: String, fragmentShaderCode: String) {
+/*
     private val vertexShaderCode: String =
         context.resources.openRawResource(R.raw.vertex_shader).readBytes().toString(Charset.defaultCharset())
     private val fragmentShaderCode: String =
         context.resources.openRawResource(R.raw.fragment_shader).readBytes().toString(Charset.defaultCharset())
+*/
 
     private var mProgram: Int
 
