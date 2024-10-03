@@ -24,7 +24,7 @@ class ModelLoader(private val context: Context) {
                     texCoords.addAll(parts.subList(1, 3).map { it.toFloat() })
                 }
                 "vn" -> {  // Normals
-                    normals.addAll(parts.subList(1, 4).map { it.toFloat() })
+                    //normals.addAll(parts.subList(1, 4).map { it.toFloat() })
                 }
                 "f" -> {  // Faces (indices)
                     parts.subList(1, 4).forEach { face ->
