@@ -24,27 +24,23 @@ void main() {
     vec3 lightDir = normalize(lightPos - FragPos);
 
     // Diffuse lighting
-    float NdotL = max(dot(norm, lightDir), 0.0);
+    float NdotL = max(dot(norm, lightDir), 0.0f);
 
     // Gooch shading - interpolation between warm and cool colors
     vec3 kCool = min(coolColor + diffuseCool * surfaceColor, 1.0f);
     vec3 kWarm = max(warmColor + diffuseWarm * surfaceColor, 1.0f);
     vec3 kFinal = mix(kCool, kWarm, NdotL);
 
-    // Specular highlights (Blinn-Phong)
-    float specularStrength = 0.5;
+    // Calculate the specular component using Blinn-Phong shading
     vec3 viewDir = normalize(viewPos - FragPos);
-    vec3 reflectDir = reflect(-lightDir, norm);
-    float spec = pow(max(dot(viewDir, reflectDir), 0.0), 32.0);
-    vec3 specular = specularStrength * spec * lightColor;
-
-    // Combine Gooch shading and specular highlights with object color
-    //vec3 result = (goochColor + specular) * objectColor;
+    vec3 halfwayDir = normalize(lightDir + viewDir);  // Halfway vector
+    float specAngle = max(dot(norm, halfwayDir), 0.0);
+    float specular = pow(specAngle, 16.0f);      // Specular intensity
 
     // Output the final fragment color
     if (gl_FrontFacing) {
-        fragColor = vec4(min(kFinal + spec, 1.0), 1.0);
+        fragColor = vec4(min(kFinal + specular, 1.0f), 1.0f);
     } else {
-        fragColor = vec4(0, 0, 0, 1);
+        fragColor = vec4(0.0f, 0.0f, 0.0f, 1.0f);
     }
 }
