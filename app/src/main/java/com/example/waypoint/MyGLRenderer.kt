@@ -55,7 +55,7 @@ class MyGLRenderer(private val context: Context) : GLSurfaceView.Renderer {
             context.resources.openRawResource(R.raw.vertex_outline_shader).readBytes().toString(Charset.defaultCharset()),
             context.resources.openRawResource(R.raw.fragment_outline_shader).readBytes().toString(Charset.defaultCharset())
         )
-        objModel = ModelLoader(context).loadModel("bunny.obj")
+        objModel = ModelLoader(context).loadModel("walls_fixed.obj")
 
         lightShaderProgram = ShaderProgram(
             context.resources.openRawResource(R.raw.light_vertex_shader).readBytes().toString(Charset.defaultCharset()),
@@ -70,7 +70,7 @@ class MyGLRenderer(private val context: Context) : GLSurfaceView.Renderer {
         GLES30.glEnable(GLES30.GL_STENCIL_TEST)
         GLES30.glStencilOp(GLES30.GL_KEEP, GLES30.GL_KEEP, GLES30.GL_REPLACE);
 
-        GLES30.glClearColor(1.0f, 1.0f, 1.0f, 1.0f)
+        GLES30.glClearColor(112/255f, 128/255f, 144/255f, 1.0f)
         //GLES30.glClearColor(0.00392156862745098f, 0.13725490196078433f, 0.25098039215686274f, 1.0f)
         GLES30.glClear(GLES30.GL_COLOR_BUFFER_BIT or GLES30.GL_DEPTH_BUFFER_BIT or GLES30.GL_STENCIL_BUFFER_BIT)
 
@@ -118,13 +118,13 @@ class MyGLRenderer(private val context: Context) : GLSurfaceView.Renderer {
         val lightColorLocation = GLES30.glGetUniformLocation(shaderProgram.getProgram(), "lightColor")
         GLES30.glUniform3f(lightColorLocation, 1.0f, 1.0f, 1.0f)
         val surfaceColorLocation = GLES30.glGetUniformLocation(shaderProgram.getProgram(), "surfaceColor")
-        GLES30.glUniform3f(surfaceColorLocation, 0.75f, 0.75f, 0.75f)
+        GLES30.glUniform3f(surfaceColorLocation, 211/255f, 211/255f, 211/255f)
         val diffuseWarmLocation = GLES30.glGetUniformLocation(shaderProgram.getProgram(), "diffuseWarm")
-        GLES30.glUniform1f(diffuseWarmLocation, 0.45f)
+        GLES30.glUniform1f(diffuseWarmLocation, 0.3f)
         val diffuseCoolLocation = GLES30.glGetUniformLocation(shaderProgram.getProgram(), "diffuseCool")
-        GLES30.glUniform1f(diffuseCoolLocation, 0.45f)
+        GLES30.glUniform1f(diffuseCoolLocation, 0.3f)
         val warmColorLocation = GLES30.glGetUniformLocation(shaderProgram.getProgram(), "warmColor")
-        GLES30.glUniform3f(warmColorLocation, 0.6f, 0.6f, 0.0f)
+        GLES30.glUniform3f(warmColorLocation, 255/255f, 204/255f, 153/255f)
         val coolColorLocation = GLES30.glGetUniformLocation(shaderProgram.getProgram(), "coolColor")
         GLES30.glUniform3f(coolColorLocation, 0.0f, 0.0f, 0.6f)
         val lightPositionLocation = GLES30.glGetUniformLocation(shaderProgram.getProgram(), "lightPos")
@@ -141,7 +141,6 @@ class MyGLRenderer(private val context: Context) : GLSurfaceView.Renderer {
 
         GLES30.glUseProgram(outlineProgram.getProgram())
         Matrix.setIdentityM(modelMatrix, 0)
-        //Matrix.scaleM(modelMatrix, 0, 1.05f, 1.05f, 1.05f)
         Matrix.scaleM(modelMatrix, 0, scaleFactor, scaleFactor, scaleFactor)
         Matrix.rotateM(modelMatrix, 0, rotationX, 1.0f, 0.0f, 0.0f)
         Matrix.rotateM(modelMatrix, 0, rotationY, 0.0f, 1.0f, 0.0f)
@@ -151,6 +150,8 @@ class MyGLRenderer(private val context: Context) : GLSurfaceView.Renderer {
         GLES30.glUniformMatrix4fv(ouViewMatrixLocation, 1, false, viewMatrix, 0)
         val ouProjectionMatrixLocation = GLES30.glGetUniformLocation(outlineProgram.getProgram(), "u_Projection")
         GLES30.glUniformMatrix4fv(ouProjectionMatrixLocation, 1, false, projectionMatrix, 0)
+        val outlineLocation = GLES30.glGetUniformLocation(outlineProgram.getProgram(), "u_Outline")
+        GLES30.glUniform1f(outlineLocation, 0.05f)
         objModel?.render(outlineProgram, modelMatrix)
 
         // Reset stencil and depth test states
