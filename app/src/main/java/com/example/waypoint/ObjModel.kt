@@ -26,7 +26,7 @@ class ObjModel(private val vertices: List<Float>, private val texCoords: List<Fl
         GLES30.glBufferData(GLES30.GL_ELEMENT_ARRAY_BUFFER, indices.size * 4, indices.toIntBuffer(), GLES30.GL_STATIC_DRAW)
     }
 
-    fun render(shaderProgram: ShaderProgram, mvpMatrix: FloatArray) {
+    fun render(shaderProgram: Program, mvpMatrix: FloatArray) {
         // Enable attributes and bind buffers
         GLES30.glEnableVertexAttribArray(0)
         GLES30.glBindBuffer(GLES30.GL_ARRAY_BUFFER, vertexBuffer[0])
