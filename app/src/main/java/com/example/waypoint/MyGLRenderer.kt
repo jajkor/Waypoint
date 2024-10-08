@@ -13,9 +13,9 @@ class MyGLRenderer(private val context: Context) : GLSurfaceView.Renderer {
     private var objModel: ObjModel? = null
     private var lightModel: ObjModel? = null
 
-    private lateinit var shaderProgram: ShaderProgram
-    private lateinit var outlineProgram: ShaderProgram
-    private lateinit var lightShaderProgram: ShaderProgram
+    private lateinit var shaderProgram: Program
+    private lateinit var outlineProgram: Program
+    private lateinit var lightShaderProgram: Program
 
     private var cameraX: Float = 0.0f
     private var cameraY: Float = 0.0f
@@ -47,17 +47,32 @@ class MyGLRenderer(private val context: Context) : GLSurfaceView.Renderer {
         GLES30.glStencilFunc(GLES30.GL_NOTEQUAL, 1, 0xFF);
         GLES30.glStencilOp(GLES30.GL_KEEP, GLES30.GL_KEEP, GLES30.GL_REPLACE) // Control result of passing/failing a test.
 
-        shaderProgram = ShaderProgram(
+/*        shaderProgram = Program.create(
+            context.resources.readRawTextFile(R.raw.vertex_shader),
+            context.resources.readRawTextFile(R.raw.fragment_shader)
+        )
+        outlineProgram = Program.create(
+            context.resources.readRawTextFile(R.raw.fragment_outline_shader),
+            context.resources.readRawTextFile(R.raw.vertex_outline_shader)
+        )
+        objModel = ModelLoader(context).loadModel("walls_fixed.obj")
+
+        lightShaderProgram = Program.create(
+            context.resources.readRawTextFile(R.raw.light_vertex_shader),
+            context.resources.readRawTextFile(R.raw.light_fragment_shader)
+        )
+        lightModel = ModelLoader(context).loadModel("light_cube.obj")*/
+        shaderProgram = Program(
             context.resources.openRawResource(R.raw.vertex_shader).readBytes().toString(Charset.defaultCharset()),
             context.resources.openRawResource(R.raw.fragment_shader).readBytes().toString(Charset.defaultCharset())
         )
-        outlineProgram = ShaderProgram(
+        outlineProgram = Program(
             context.resources.openRawResource(R.raw.vertex_outline_shader).readBytes().toString(Charset.defaultCharset()),
             context.resources.openRawResource(R.raw.fragment_outline_shader).readBytes().toString(Charset.defaultCharset())
         )
         objModel = ModelLoader(context).loadModel("walls_fixed.obj")
 
-        lightShaderProgram = ShaderProgram(
+        lightShaderProgram = Program(
             context.resources.openRawResource(R.raw.light_vertex_shader).readBytes().toString(Charset.defaultCharset()),
             context.resources.openRawResource(R.raw.light_fragment_shader).readBytes().toString(Charset.defaultCharset())
         )
@@ -71,14 +86,9 @@ class MyGLRenderer(private val context: Context) : GLSurfaceView.Renderer {
         GLES30.glStencilOp(GLES30.GL_KEEP, GLES30.GL_KEEP, GLES30.GL_REPLACE);
 
         GLES30.glClearColor(112/255f, 128/255f, 144/255f, 1.0f)
-        //GLES30.glClearColor(0.00392156862745098f, 0.13725490196078433f, 0.25098039215686274f, 1.0f)
         GLES30.glClear(GLES30.GL_COLOR_BUFFER_BIT or GLES30.GL_DEPTH_BUFFER_BIT or GLES30.GL_STENCIL_BUFFER_BIT)
 
         Matrix.setLookAtM(viewMatrix, 0, cameraX, cameraY, cameraZ, 0f, 0f, 0f, 0f, 1f, 0f)
-        Matrix.setIdentityM(modelMatrix, 0)
-        Matrix.rotateM(modelMatrix, 0, rotationX, 1.0f, 0.0f, 0.0f)
-        Matrix.rotateM(modelMatrix, 0, rotationY, 0.0f, 1.0f, 0.0f)
-        Matrix.scaleM(modelMatrix, 0, scaleFactor, scaleFactor, scaleFactor)
 
         val elapsedTime = (System.nanoTime() - startTime) / 1_000_000_000.0f
         val lightX = Math.sin(elapsedTime.toDouble()).toFloat() * 20f // Move along the x-axis
@@ -86,72 +96,53 @@ class MyGLRenderer(private val context: Context) : GLSurfaceView.Renderer {
         val lightZ = Math.cos(elapsedTime.toDouble()).toFloat() * 20f// Move along the z-axis
 
         GLES30.glStencilMask(0xFF)
-        GLES30.glUseProgram(lightShaderProgram.getProgram())
+        lightShaderProgram.use()
         Matrix.setIdentityM(modelMatrix, 0)
         Matrix.scaleM(modelMatrix, 0, 0.2f, 0.2f, 0.2f)
         Matrix.scaleM(modelMatrix, 0, scaleFactor, scaleFactor, scaleFactor)
         Matrix.rotateM(modelMatrix, 0, rotationX, 1.0f, 0.0f, 0.0f)
         Matrix.rotateM(modelMatrix, 0, rotationY, 0.0f, 1.0f, 0.0f)
         Matrix.translateM(modelMatrix, 0, lightX, lightY, lightZ)
-        val uLightModelMatrixLocation = GLES30.glGetUniformLocation(lightShaderProgram.getProgram(), "u_Model")
-        GLES30.glUniformMatrix4fv(uLightModelMatrixLocation, 1, false, modelMatrix, 0)
-        val uLightViewMatrixLocation = GLES30.glGetUniformLocation(lightShaderProgram.getProgram(), "u_View")
-        GLES30.glUniformMatrix4fv(uLightViewMatrixLocation, 1, false, viewMatrix, 0)
-        val uLightProjectionMatrixLocation = GLES30.glGetUniformLocation(lightShaderProgram.getProgram(), "u_Projection")
-        GLES30.glUniformMatrix4fv(uLightProjectionMatrixLocation, 1, false, projectionMatrix, 0)
+        lightShaderProgram.setMat4("u_Model", modelMatrix)
+        lightShaderProgram.setMat4("u_View", viewMatrix)
+        lightShaderProgram.setMat4("u_Projection", projectionMatrix)
         lightModel?.render(lightShaderProgram, modelMatrix)
 
         // 1st. render pass: Render the object and update the stencil buffer
         GLES30.glStencilFunc(GLES30.GL_ALWAYS, 1, 0xFF)  // Always pass the stencil test
         GLES30.glStencilMask(0xFF)  // Enable writing to stencil buffer
-        GLES30.glUseProgram(shaderProgram.getProgram()) // Add program to OpenGL ES environment
+        shaderProgram.use()
         Matrix.setIdentityM(modelMatrix, 0)
         Matrix.scaleM(modelMatrix, 0, scaleFactor, scaleFactor, scaleFactor)
         Matrix.rotateM(modelMatrix, 0, rotationX, 1.0f, 0.0f, 0.0f)
         Matrix.rotateM(modelMatrix, 0, rotationY, 0.0f, 1.0f, 0.0f)
-        val uModelMatrixLocation = GLES30.glGetUniformLocation(shaderProgram.getProgram(), "u_Model")
-        GLES30.glUniformMatrix4fv(uModelMatrixLocation, 1, false, modelMatrix, 0)
-        val uViewMatrixLocation = GLES30.glGetUniformLocation(shaderProgram.getProgram(), "u_View")
-        GLES30.glUniformMatrix4fv(uViewMatrixLocation, 1, false, viewMatrix, 0)
-        val uProjectionMatrixLocation = GLES30.glGetUniformLocation(shaderProgram.getProgram(), "u_Projection")
-        GLES30.glUniformMatrix4fv(uProjectionMatrixLocation, 1, false, projectionMatrix, 0)
-        val lightColorLocation = GLES30.glGetUniformLocation(shaderProgram.getProgram(), "lightColor")
-        GLES30.glUniform3f(lightColorLocation, 1.0f, 1.0f, 1.0f)
-        val surfaceColorLocation = GLES30.glGetUniformLocation(shaderProgram.getProgram(), "surfaceColor")
-        GLES30.glUniform3f(surfaceColorLocation, 211/255f, 211/255f, 211/255f)
-        val diffuseWarmLocation = GLES30.glGetUniformLocation(shaderProgram.getProgram(), "diffuseWarm")
-        GLES30.glUniform1f(diffuseWarmLocation, 0.3f)
-        val diffuseCoolLocation = GLES30.glGetUniformLocation(shaderProgram.getProgram(), "diffuseCool")
-        GLES30.glUniform1f(diffuseCoolLocation, 0.3f)
-        val warmColorLocation = GLES30.glGetUniformLocation(shaderProgram.getProgram(), "warmColor")
-        GLES30.glUniform3f(warmColorLocation, 255/255f, 204/255f, 153/255f)
-        val coolColorLocation = GLES30.glGetUniformLocation(shaderProgram.getProgram(), "coolColor")
-        GLES30.glUniform3f(coolColorLocation, 0.0f, 0.0f, 0.6f)
-        val lightPositionLocation = GLES30.glGetUniformLocation(shaderProgram.getProgram(), "lightPos")
-        GLES30.glUniform3f(lightPositionLocation, lightX, lightY, lightZ)
-        val viewPositionLocation = GLES30.glGetUniformLocation(shaderProgram.getProgram(), "viewPos")
+        shaderProgram.setMat4("u_Model", modelMatrix)
+        shaderProgram.setMat4("u_View", viewMatrix)
+        shaderProgram.setMat4("u_Projection", projectionMatrix)
+        shaderProgram.setFloat3("lightColor", Vector3(1.0f, 1.0f, 1.0f))
+        shaderProgram.setFloat3("surfaceColor", Vector3(211/255f, 211/255f, 211/255f))
+        shaderProgram.setFloat("diffuseWarm", 0.3f)
+        shaderProgram.setFloat("diffuseCool", 0.3f)
+        shaderProgram.setFloat3("warmColor", Vector3(255/255f, 204/255f, 153/255f))
+        shaderProgram.setFloat3("coolColor", Vector3(0.0f, 0.0f, 0.6f))
+        shaderProgram.setFloat3("lightPos", Vector3(lightX, lightY, lightZ))
         val cameraPosition = getCameraPositionInWorldSpace(viewMatrix)
-        GLES30.glUniform3f(viewPositionLocation, cameraPosition[0], cameraPosition[1], cameraPosition[2])
+        shaderProgram.setFloat3("viewPos", Vector3(cameraPosition[0], cameraPosition[1], cameraPosition[2]))
         objModel?.render(shaderProgram, modelMatrix)
 
         // Second Pass: Render outline, only where stencil is not equal to 1 (outside the cube)
         GLES30.glStencilFunc(GLES30.GL_NOTEQUAL, 1, 0xFF)  // Only pass where stencil value is not 1
         GLES30.glStencilMask(0x00)  // Disable writing to the stencil buffer
         GLES30.glDisable(GLES30.GL_DEPTH_TEST)  // Disable depth testing for the outline
-
-        GLES30.glUseProgram(outlineProgram.getProgram())
+        outlineProgram.use()
         Matrix.setIdentityM(modelMatrix, 0)
         Matrix.scaleM(modelMatrix, 0, scaleFactor, scaleFactor, scaleFactor)
         Matrix.rotateM(modelMatrix, 0, rotationX, 1.0f, 0.0f, 0.0f)
         Matrix.rotateM(modelMatrix, 0, rotationY, 0.0f, 1.0f, 0.0f)
-        val ouModelMatrixLocation = GLES30.glGetUniformLocation(outlineProgram.getProgram(), "u_Model")
-        GLES30.glUniformMatrix4fv(ouModelMatrixLocation, 1, false, modelMatrix, 0)
-        val ouViewMatrixLocation = GLES30.glGetUniformLocation(outlineProgram.getProgram(), "u_View")
-        GLES30.glUniformMatrix4fv(ouViewMatrixLocation, 1, false, viewMatrix, 0)
-        val ouProjectionMatrixLocation = GLES30.glGetUniformLocation(outlineProgram.getProgram(), "u_Projection")
-        GLES30.glUniformMatrix4fv(ouProjectionMatrixLocation, 1, false, projectionMatrix, 0)
-        val outlineLocation = GLES30.glGetUniformLocation(outlineProgram.getProgram(), "u_Outline")
-        GLES30.glUniform1f(outlineLocation, 0.05f)
+        outlineProgram.setMat4("u_Model", modelMatrix)
+        outlineProgram.setMat4("u_View", viewMatrix)
+        outlineProgram.setMat4("u_Projection", projectionMatrix)
+        outlineProgram.setFloat("u_Outline", 0.05f)
         objModel?.render(outlineProgram, modelMatrix)
 
         // Reset stencil and depth test states
