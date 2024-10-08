@@ -6,21 +6,21 @@ in vec3 Normal;
 
 out vec4 fragColor;
 
-uniform vec3 viewPos;
-uniform vec3 lightColor;
+//uniform vec3 viewPos;
+/**uniform vec3 lightColor;
 uniform vec3 lightPos;
 
 uniform vec3 surfaceColor;
 uniform float diffuseWarm;
 uniform float diffuseCool;
 uniform vec3 warmColor;
-uniform vec3 coolColor;
+uniform vec3 coolColor;*/
 
 void main() {
     // Normalize the normal vector
     vec3 norm = normalize(Normal);
 
-    // Calculate light direction
+/**    // Calculate light direction
     vec3 lightDir = normalize(lightPos - FragPos);
 
     // Diffuse lighting
@@ -38,9 +38,7 @@ void main() {
     float specular = pow(specAngle, 16.0f);      // Specular intensity
 
     // Output the final fragment color
-    if (gl_FrontFacing) {
-        fragColor = vec4(min(kFinal + specular, 1.0f), 1.0f);
-    } else {
-        fragColor = vec4(0.0f, 0.0f, 0.0f, 1.0f);
-    }
+    fragColor = vec4(min(kFinal + specular, 1.0f), 1.0f);*/
+    fragColor = vec4(norm, 1.0f);
+
 }
