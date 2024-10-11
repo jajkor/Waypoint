@@ -1,6 +1,6 @@
 # Blender 4.2.2 LTS
 # www.blender.org
-mtllib walls_fixed.mtl
+mtllib campus_walls.mtl
 o Plane
 v -11.073183 -0.000001 -8.919527
 v -8.147527 -0.000001 -8.919527
