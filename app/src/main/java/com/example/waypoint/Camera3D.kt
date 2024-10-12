@@ -6,7 +6,7 @@ class Camera3D(var position: Vector3 = Vector3(0.0f, 0.0f, 0.0f), private var pi
 
     private var yaw: Float = 0f  // Horizontal rotation angle
     private var pitch: Float = 89f  // Vertical rotation angle
-    private var distanceFromPivot: Float = 20f  // Distance from pivot point (for zoom)
+    private var distanceFromPivot: Float = 30f  // Distance from pivot point (for zoom)
 
     // Limits for how close or far the camera can zoom
     private val minDistance: Float = 10f  // Minimum zoom (closest)
@@ -36,7 +36,7 @@ class Camera3D(var position: Vector3 = Vector3(0.0f, 0.0f, 0.0f), private var pi
 
     fun rotate(yawDelta: Float, pitchDelta: Float) {
         yaw += yawDelta
-        pitch = Math.max(25f, Math.min(89f, pitch + pitchDelta))  // Clamp pitch to avoid flipping
+        pitch = Math.max(-89f, Math.min(89f, pitch + pitchDelta))  // Clamp pitch to avoid flipping
     }
 
     fun getViewMatrix(): FloatArray {

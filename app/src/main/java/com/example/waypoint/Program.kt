@@ -1,28 +1,33 @@
 package com.example.waypoint
 
-import android.opengl.GLES30.*
+import android.opengl.GLES32.*
 
-class Program(vertexShaderCode: String, fragmentShaderCode: String) {
-
+class Program(vertexShaderCode: String?, fragmentShaderCode: String?, geometryShaderCode: String? = null) {
     private var id: Int
 
     init {
-        val vertexShader: Int = loadShader(GL_VERTEX_SHADER, vertexShaderCode)
-        val fragmentShader: Int = loadShader(GL_FRAGMENT_SHADER, fragmentShaderCode)
+        val shaders = mutableListOf<Int>()
+        shaders.add(loadShader(GL_VERTEX_SHADER, vertexShaderCode))
+        shaders.add(loadShader(GL_FRAGMENT_SHADER, fragmentShaderCode))
+        if (geometryShaderCode != null) {
+            shaders.add(loadShader(GL_GEOMETRY_SHADER, geometryShaderCode))
+        }
 
         // create empty OpenGL ES Program
         id = glCreateProgram().also {
-            glAttachShader(it, vertexShader)// add the vertex shader to program
-            glAttachShader(it, fragmentShader)// add the fragment shader to program
+            for (i in shaders.indices) {
+                glAttachShader(it, shaders[i])
+            }
 
             glLinkProgram(it) // creates OpenGL ES program executables
 
-            glDeleteShader(vertexShader)
-            glDeleteShader(fragmentShader)
+            for (i in shaders.indices) {
+                glDeleteShader(shaders[i])
+            }
         }
     }
 
-    fun loadShader(type: Int, shaderCode: String): Int {
+    fun loadShader(type: Int, shaderCode: String?): Int {
         // create a vertex shader type (GL_VERTEX_SHADER) or a fragment shader type (GL_FRAGMENT_SHADER)
         return glCreateShader(type).also { shader ->
             // add the source code to the shader and compile it
@@ -33,13 +38,11 @@ class Program(vertexShaderCode: String, fragmentShaderCode: String) {
 
     fun setFloat(uniformName: String, f: Float) = glUniform1f(glGetUniformLocation(id, uniformName), f)
 
-    fun setFloat2(uniformName: String, f2: Vector2) =
+    fun setVector2(uniformName: String, f2: Vector2) =
         glUniform2f(glGetUniformLocation(id, uniformName), f2.x, f2.y)
 
-    fun setFloat3(uniformName: String, f3: Vector3) =
+    fun setVector3(uniformName: String, f3: Vector3) =
         glUniform3f(glGetUniformLocation(id, uniformName), f3.x, f3.y, f3.z)
-
-    fun setInt(location: Int, i: Int) = glUniform1i(location, i)
 
     fun setInt(uniformName: String, i: Int) = glUniform1i(glGetUniformLocation(id, uniformName), i)
 

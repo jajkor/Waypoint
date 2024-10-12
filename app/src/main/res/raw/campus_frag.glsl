@@ -1,4 +1,4 @@
-#version 300 es
+#version 320 es
 precision mediump float;
 
 in vec3 FragPos;
@@ -28,14 +28,14 @@ void main() {
 
     // Gooch shading - interpolation between warm and cool colors
     vec3 kCool = min(coolColor + diffuseCool * surfaceColor, 1.0f);
-    vec3 kWarm = max(warmColor + diffuseWarm * surfaceColor, 1.0f);
+    vec3 kWarm = min(warmColor + diffuseWarm * surfaceColor, 1.0f);
     vec3 kFinal = mix(kCool, kWarm, NdotL);
 
     // Calculate the specular component using Blinn-Phong shading
     vec3 viewDir = normalize(viewPos - FragPos);
     vec3 halfwayDir = normalize(lightDir + viewDir);  // Halfway vector
     float specAngle = max(dot(norm, halfwayDir), 0.0);
-    float specular = pow(specAngle, 16.0f);      // Specular intensity
+    float specular = pow(specAngle, 32.0f);      // Specular intensity
 
     // Output the final fragment color
     if (gl_FrontFacing) {

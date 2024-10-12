@@ -5,8 +5,8 @@ import java.io.BufferedReader
 import java.io.InputStreamReader
 
 class ModelLoader(private val context: Context) {
-    fun loadModel(fileName: String): ObjModel {
-        val inputStream = context.assets.open(fileName)
+    fun loadModel(objFileName: String, mtlFileName: String? = null): ObjModel {
+        val inputStream = context.assets.open(objFileName)
         val reader = BufferedReader(InputStreamReader(inputStream))
 
         val vertices = mutableListOf<Float>()
@@ -35,7 +35,7 @@ class ModelLoader(private val context: Context) {
             }
         }
 
-        return ObjModel(vertices, texCoords, if (normals.isEmpty()) calculateNormals(vertices, indices) else normals, indices)
+        return ObjModel(vertices, if (normals.isEmpty()) calculateNormals(vertices, indices) else normals, texCoords, indices)
     }
 
     fun calculateFaceNormal(v0: List<Float>, v1: List<Float>, v2: List<Float>): List<Float> {
