@@ -11,6 +11,6 @@ uniform mat4 u_Projection;
 
 void main() {
     FragPos = vec3(u_Model * vec4(a_Position, 1.0));
-    Normal = a_Normal;
+    Normal = mat3(transpose(inverse(u_Model))) * a_Normal; // Ensures Normal vectors stay perpendicular after non-uniform scaling. May be more computationally efficient to do on CPU
     gl_Position = u_Projection * u_View * u_Model * vec4(a_Position, 1.0);
 }

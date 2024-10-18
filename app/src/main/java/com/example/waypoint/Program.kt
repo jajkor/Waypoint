@@ -1,8 +1,28 @@
 package com.example.waypoint
 
-import android.opengl.GLES32.*
+import android.opengl.GLES32.GL_FRAGMENT_SHADER
+import android.opengl.GLES32.GL_GEOMETRY_SHADER
+import android.opengl.GLES32.GL_VERTEX_SHADER
+import android.opengl.GLES32.glAttachShader
+import android.opengl.GLES32.glCompileShader
+import android.opengl.GLES32.glCreateProgram
+import android.opengl.GLES32.glCreateShader
+import android.opengl.GLES32.glDeleteShader
+import android.opengl.GLES32.glGetUniformLocation
+import android.opengl.GLES32.glLinkProgram
+import android.opengl.GLES32.glShaderSource
+import android.opengl.GLES32.glUniform1f
+import android.opengl.GLES32.glUniform1i
+import android.opengl.GLES32.glUniform2f
+import android.opengl.GLES32.glUniform3f
+import android.opengl.GLES32.glUniformMatrix4fv
+import android.opengl.GLES32.glUseProgram
 
-class Program(vertexShaderCode: String?, fragmentShaderCode: String?, geometryShaderCode: String? = null) {
+class Program(
+    vertexShaderCode: String?,
+    fragmentShaderCode: String?,
+    geometryShaderCode: String? = null,
+) {
     private var id: Int
 
     init {
@@ -14,20 +34,24 @@ class Program(vertexShaderCode: String?, fragmentShaderCode: String?, geometrySh
         }
 
         // create empty OpenGL ES Program
-        id = glCreateProgram().also {
-            for (i in shaders.indices) {
-                glAttachShader(it, shaders[i])
-            }
+        id =
+            glCreateProgram().also {
+                for (i in shaders.indices) {
+                    glAttachShader(it, shaders[i])
+                }
 
-            glLinkProgram(it) // creates OpenGL ES program executables
+                glLinkProgram(it) // creates OpenGL ES program executables
 
-            for (i in shaders.indices) {
-                glDeleteShader(shaders[i])
+                for (i in shaders.indices) {
+                    glDeleteShader(shaders[i])
+                }
             }
-        }
     }
 
-    fun loadShader(type: Int, shaderCode: String?): Int {
+    private fun loadShader(
+        type: Int,
+        shaderCode: String?,
+    ): Int {
         // create a vertex shader type (GL_VERTEX_SHADER) or a fragment shader type (GL_FRAGMENT_SHADER)
         return glCreateShader(type).also { shader ->
             // add the source code to the shader and compile it
@@ -36,18 +60,31 @@ class Program(vertexShaderCode: String?, fragmentShaderCode: String?, geometrySh
         }
     }
 
-    fun setFloat(uniformName: String, f: Float) = glUniform1f(glGetUniformLocation(id, uniformName), f)
+    fun setFloat(
+        uniformName: String,
+        f: Float,
+    ) = glUniform1f(glGetUniformLocation(id, uniformName), f)
 
-    fun setVector2(uniformName: String, f2: Vector2) =
-        glUniform2f(glGetUniformLocation(id, uniformName), f2.x, f2.y)
+    fun setVector2(
+        uniformName: String,
+        f2: Vector2,
+    ) = glUniform2f(glGetUniformLocation(id, uniformName), f2.x, f2.y)
 
-    fun setVector3(uniformName: String, f3: Vector3) =
-        glUniform3f(glGetUniformLocation(id, uniformName), f3.x, f3.y, f3.z)
+    fun setVector3(
+        uniformName: String,
+        f3: Vector3,
+    ) = glUniform3f(glGetUniformLocation(id, uniformName), f3.x, f3.y, f3.z)
 
-    fun setInt(uniformName: String, i: Int) = glUniform1i(glGetUniformLocation(id, uniformName), i)
+    fun setInt(
+        uniformName: String,
+        i: Int,
+    ) = glUniform1i(glGetUniformLocation(id, uniformName), i)
 
-    fun setMat4(uniformName: String, m4: FloatArray, transpose: Boolean = false) =
-        glUniformMatrix4fv(glGetUniformLocation(id, uniformName), 1, transpose, m4, 0)
+    fun setMat4(
+        uniformName: String,
+        m4: FloatArray,
+        transpose: Boolean = false,
+    ) = glUniformMatrix4fv(glGetUniformLocation(id, uniformName), 1, transpose, m4, 0)
 
     fun use() = glUseProgram(id)
 }

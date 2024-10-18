@@ -4,8 +4,10 @@ import android.content.Context
 import java.io.BufferedReader
 import java.io.InputStreamReader
 
-class ModelLoader(private val context: Context) {
-    fun loadModel(objFileName: String, mtlFileName: String? = null): ObjModel {
+class ModelLoader(
+    private val context: Context,
+) {
+    fun loadModel(objFileName: String): Model {
         val inputStream = context.assets.open(objFileName)
         val reader = BufferedReader(InputStreamReader(inputStream))
 
@@ -17,45 +19,53 @@ class ModelLoader(private val context: Context) {
         reader.forEachLine { line ->
             val parts = line.split(" ")
             when (parts[0]) {
-                "v" -> {  // Vertex coordinates
+                "v" -> { // Vertex coordinates
                     vertices.addAll(parts.subList(1, 4).map { it.toFloat() })
                 }
-                "vt" -> {  // Texture coordinates
+                "vt" -> { // Texture coordinates
                     texCoords.addAll(parts.subList(1, 3).map { it.toFloat() })
                 }
-                "vn" -> {  // Normals
-                    //normals.addAll(parts.subList(1, 4).map { it.toFloat() })
+                "vn" -> { // Normals
+                    // normals.addAll(parts.subList(1, 4).map { it.toFloat() })
                 }
-                "f" -> {  // Faces (indices)
+                "f" -> { // Faces (indices)
                     parts.subList(1, 4).forEach { face ->
                         val vertexData = face.split("/")
-                        indices.add(vertexData[0].toInt() - 1)  // OBJ indexing starts from 1
+                        indices.add(vertexData[0].toInt() - 1) // OBJ indexing starts from 1
                     }
                 }
             }
         }
 
-        return ObjModel(vertices, if (normals.isEmpty()) calculateNormals(vertices, indices) else normals, texCoords, indices)
+        return Model(vertices, if (normals.isEmpty()) calculateNormals(vertices, indices) else normals, texCoords, indices)
     }
 
-    fun calculateFaceNormal(v0: List<Float>, v1: List<Float>, v2: List<Float>): List<Float> {
+    private fun calculateFaceNormal(
+        v0: List<Float>,
+        v1: List<Float>,
+        v2: List<Float>,
+    ): List<Float> {
         // Edge vectors
         val edge1 = listOf(v1[0] - v0[0], v1[1] - v0[1], v1[2] - v0[2])
         val edge2 = listOf(v2[0] - v0[0], v2[1] - v0[1], v2[2] - v0[2])
 
         // Cross product of edge1 and edge2
-        val normal = listOf(
-            edge1[1] * edge2[2] - edge1[2] * edge2[1],
-            edge1[2] * edge2[0] - edge1[0] * edge2[2],
-            edge1[0] * edge2[1] - edge1[1] * edge2[0]
-        )
+        val normal =
+            listOf(
+                edge1[1] * edge2[2] - edge1[2] * edge2[1],
+                edge1[2] * edge2[0] - edge1[0] * edge2[2],
+                edge1[0] * edge2[1] - edge1[1] * edge2[0],
+            )
 
         // Normalize the normal vector
         val length = Math.sqrt((normal[0] * normal[0] + normal[1] * normal[1] + normal[2] * normal[2]).toDouble()).toFloat()
         return listOf(normal[0] / length, normal[1] / length, normal[2] / length)
     }
 
-    fun calculateNormals(vertices: MutableList<Float>, indices: List<Int>): MutableList<Float> {
+    private fun calculateNormals(
+        vertices: MutableList<Float>,
+        indices: List<Int>,
+    ): MutableList<Float> {
         val normals = MutableList(vertices.size) { 0.0f } // Initialize normals to 0
 
         val numFaces = indices.size / 3 // Number of faces

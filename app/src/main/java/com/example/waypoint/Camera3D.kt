@@ -36,7 +36,7 @@ class Camera3D(var position: Vector3 = Vector3(0.0f, 0.0f, 0.0f), private var pi
 
     fun rotate(yawDelta: Float, pitchDelta: Float) {
         yaw += yawDelta
-        pitch = Math.max(-89f, Math.min(89f, pitch + pitchDelta))  // Clamp pitch to avoid flipping
+        pitch = Math.max(10f, Math.min(89f, pitch + pitchDelta))  // Clamp pitch to avoid flipping
     }
 
     fun getViewMatrix(): FloatArray {

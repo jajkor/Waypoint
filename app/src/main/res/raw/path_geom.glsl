@@ -1,6 +1,6 @@
 #version 320 es
 layout(lines) in;
-layout(triangle_strip, max_vertices = 5) out;
+layout(triangle_strip, max_vertices = 10) out;
 
 uniform vec3 u_UserPos;
 uniform vec3 u_NodePos;
@@ -26,29 +26,49 @@ void main() {
     float quadHeight = 0.2;
     // Create vertices for the quad stretched from userPosition to destinationPosition
 
-    vec3 v1 = userPosition + right * quadScale;
-    v1.y += quadHeight;
-    gl_Position = u_Projection * u_View * vec4(v1.x, v1.y, v1.z, 1.0);
+    vec3 v1 = userPosition + right * quadScale + quadHeight; // Bottom Left
+    vec3 v2 = destinationPosition + right * quadScale + quadHeight; // Top Left
+    vec3 v3 = userPosition - right * quadScale + quadHeight; // Bottom Right
+    vec3 v4 = destinationPosition - right * quadScale + quadHeight; // Top Left
+
+    // 1
+    gl_Position = u_Projection * u_View * vec4(v1.x, v1.y + quadHeight, v1.z, 1.0);
     EmitVertex();
 
-    vec3 v2 = destinationPosition + right * quadScale;
-    v2.y += quadHeight;
-    gl_Position = u_Projection * u_View * vec4(v2.x, v2.y, v2.z, 1.0);
+    // 2
+    gl_Position = u_Projection * u_View * vec4(v2.x, v2.y + quadHeight, v2.z, 1.0);
     EmitVertex();
 
-    vec3 v3 = userPosition - right * quadScale;
-    v3.y += quadHeight;
-    gl_Position = u_Projection * u_View * vec4(v3.x, v3.y, v3.z, 1.0);
+    // 3
+    gl_Position = u_Projection * u_View * vec4(v3.x, v3.y + quadHeight, v3.z, 1.0);
     EmitVertex();
 
-    vec3 v4 = destinationPosition - right * quadScale;
-    v4.y += quadHeight;
-    gl_Position = u_Projection * u_View * vec4(v4.x, v4.y, v4.z, 1.0);
+    // 4
+    gl_Position = u_Projection * u_View * vec4(v4.x, v4.y + quadHeight, v4.z, 1.0);
     EmitVertex();
 
-    vec3 vertex5 = userPosition - right * quadScale;
-    //vertex5.y += 2;
-    gl_Position = u_Projection * u_View * vec4(vertex5, 1.0);
+    // 5
+    gl_Position = u_Projection * u_View * vec4(v3, 1.0);
+    EmitVertex();
+
+    // 6
+    gl_Position = u_Projection * u_View * vec4(v4, 1.0);
+    EmitVertex();
+
+    // 7
+    gl_Position = u_Projection * u_View * vec4(v1, 1.0);
+    EmitVertex();
+
+    // 8
+    gl_Position = u_Projection * u_View * vec4(v2, 1.0);
+    EmitVertex();
+
+    // 9
+    gl_Position = u_Projection * u_View * vec4(v1.x, v1.y + quadHeight, v1.z, 1.0);
+    EmitVertex();
+
+    // 10
+    gl_Position = u_Projection * u_View * vec4(v2.x, v2.y + quadHeight, v2.z, 1.0);
     EmitVertex();
 
     EndPrimitive();
