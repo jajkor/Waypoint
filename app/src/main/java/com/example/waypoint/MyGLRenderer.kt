@@ -32,6 +32,8 @@ import android.opengl.Matrix
 import android.util.Log
 import javax.microedition.khronos.egl.EGLConfig
 import javax.microedition.khronos.opengles.GL10
+import kotlin.math.cos
+import kotlin.math.sin
 
 class MyGLRenderer(
     private val context: Context,
@@ -39,14 +41,12 @@ class MyGLRenderer(
 ) : GLSurfaceView.Renderer {
     private var campusModel: Model? = null
     private var pathModel: Model? = null
-    private var cubeModel: Model? = null
     private var gridQuad: Model? = null
 
     private lateinit var gridShader: Program
     private lateinit var campusShader: Program
     private lateinit var outlineShader: Program
     private lateinit var pathShader: Program
-    private lateinit var lightShader: Program
     private lateinit var displayNormalsShader: Program
 
     private var startTime = System.nanoTime()
@@ -103,8 +103,7 @@ class MyGLRenderer(
                 context.resources.readRawTextFile(R.raw.outline_vert),
                 context.resources.readRawTextFile(R.raw.outline_frag),
             )
-        campusModel = ModelLoader(context).loadModel("campus/1stfloor.obj")
-        // campusModel = ModelLoader(context).loadModel("examples/teapot.obj")
+        campusModel = ModelLoader(context).loadModel("campus/sutherland_f1.obj")
 
         pathShader =
             Program(
@@ -113,13 +112,6 @@ class MyGLRenderer(
                 context.resources.readRawTextFile(R.raw.path_geom),
             )
         pathModel = ModelLoader(context).loadModel("path.obj")
-
-        lightShader =
-            Program(
-                context.resources.readRawTextFile(R.raw.light_vert),
-                context.resources.readRawTextFile(R.raw.light_frag),
-            )
-        cubeModel = ModelLoader(context).loadModel("cube/cube.obj")
 
         displayNormalsShader =
             Program(
@@ -131,7 +123,7 @@ class MyGLRenderer(
 
     // Called for each redraw of the view
     override fun onDrawFrame(unused: GL10?) {
-        glClearColor(0.9490196078431372f, 0.9490196078431372f, 0.9490196078431372f, 1.0f) // Set the background frame colors
+        glClearColor(0.949f, 0.949f, 0.949f, 1.0f) // Set the background frame colors
         glClear(GL_COLOR_BUFFER_BIT or GL_DEPTH_BUFFER_BIT or GL_STENCIL_BUFFER_BIT)
 
         viewMatrix = camera.getViewMatrix()
@@ -139,16 +131,16 @@ class MyGLRenderer(
         val elapsedTime = (System.nanoTime() - startTime) / 1_000_000_000.0f
         val lightPosition =
             Vector3(
-                Math.sin(elapsedTime.toDouble()).toFloat() * 20f,
+                sin(elapsedTime.toDouble()).toFloat() * 20f,
                 30.0f,
-                Math.cos(elapsedTime.toDouble()).toFloat() * 20f,
+                cos(elapsedTime.toDouble()).toFloat() * 20f,
             )
 
-        glStencilMask(0x00)
+        glStencilMask(0xFF)
         pathShader.use()
         Matrix.setIdentityM(modelMatrix, 0)
-        pathShader.setVector3("u_UserPos", Vector3(0.000f, 0.000f, 0.000f))
-        pathShader.setVector3("u_NodePos", Vector3(10.000f, 0.000f, 0.000f))
+        pathShader.setVector3("u_UserPos", Vector3(0.000f, 1.000f, 0.000f))
+        pathShader.setVector3("u_NodePos", Vector3(10.000f, 1.000f, 0.000f))
         pathShader.setMat4("u_View", viewMatrix)
         pathShader.setMat4("u_Projection", projectionMatrix)
         pathModel?.drawPoints()
@@ -161,42 +153,31 @@ class MyGLRenderer(
         gridShader.setMat4("u_Projection", projectionMatrix)
         gridQuad?.draw()
 
-        glStencilMask(0xFF)
-        lightShader.use()
-        Matrix.setIdentityM(modelMatrix, 0)
-        Matrix.scaleM(modelMatrix, 0, 0.2f, 0.2f, 0.2f)
-        Matrix.translateM(modelMatrix, 0, lightPosition.x, lightPosition.y, lightPosition.z)
-        lightShader.setMat4("u_Model", modelMatrix)
-        lightShader.setMat4("u_View", viewMatrix)
-        lightShader.setMat4("u_Projection", projectionMatrix)
-        cubeModel?.draw()
-
         // 1st. render pass: Render the object and update the stencil buffer
         glStencilFunc(GL_ALWAYS, 1, 0xFF) // Always pass the stencil test
         glStencilMask(0xFF) // Enable writing to stencil buffer
         campusShader.use()
         Matrix.setIdentityM(modelMatrix, 0)
-        Matrix.translateM(modelMatrix, 0, 0.0f, 1.25f, 0.0f)
+        Matrix.scaleM(modelMatrix, 0, 10f, 5f, 10f)
+        Matrix.translateM(modelMatrix, 0, 0.0f, 0.1f, 0.0f)
         campusShader.setMat4("u_Model", modelMatrix)
         campusShader.setMat4("u_View", viewMatrix)
         campusShader.setMat4("u_Projection", projectionMatrix)
         campusShader.setVector3("lightColor", Vector3(1.0f, 1.0f, 1.0f))
-        campusShader.setVector3("surfaceColor", Vector3(0.0196078431372549f, 0.7803921568627451f, 0.9490196078431372f))
+        campusShader.setVector3("surfaceColor", Vector3(0.019f, 0.780f, 0.949f))
         campusShader.setFloat("diffuseWarm", 0.3f)
         campusShader.setFloat("diffuseCool", 0.3f)
-        campusShader.setVector3("warmColor", Vector3(0.9490196078431372f, 0.47058823529411764f, 0.047058823529411764f))
-        campusShader.setVector3("coolColor", Vector3(0.49019607843137253f, 0.3607843137254902f, 0.9490196078431372f))
+        campusShader.setVector3("warmColor", Vector3(0.949f, 0.470f, 0.0470f))
+        campusShader.setVector3("coolColor", Vector3(0.490f, 0.360f, 0.949f))
         campusShader.setVector3("lightPos", lightPosition)
         campusShader.setVector3("viewPos", camera.position)
         campusModel?.draw()
 
         // Enable to draw normals of a mesh
         displayNormalsShader.use()
-        Matrix.setIdentityM(modelMatrix, 0)
-        Matrix.translateM(modelMatrix, 0, 0.0f, 1.25f, 0.0f)
-        campusShader.setMat4("u_Model", modelMatrix)
-        campusShader.setMat4("u_View", viewMatrix)
-        campusShader.setMat4("u_Projection", projectionMatrix)
+        displayNormalsShader.setMat4("u_Model", modelMatrix)
+        displayNormalsShader.setMat4("u_View", viewMatrix)
+        displayNormalsShader.setMat4("u_Projection", projectionMatrix)
         campusModel?.draw()
 
         // Second Pass: Render outline, only where stencil is not equal to 1 (outside the cube)
@@ -205,11 +186,12 @@ class MyGLRenderer(
         glDisable(GL_DEPTH_TEST) // Disable depth testing for the outline
         outlineShader.use()
         Matrix.setIdentityM(modelMatrix, 0)
-        Matrix.translateM(modelMatrix, 0, 0.0f, 1.25f, 0.0f)
+        Matrix.scaleM(modelMatrix, 0, 10f, 5f, 10f)
+        Matrix.translateM(modelMatrix, 0, 0.0f, 0.1f, 0.0f)
         outlineShader.setMat4("u_Model", modelMatrix)
         outlineShader.setMat4("u_View", viewMatrix)
         outlineShader.setMat4("u_Projection", projectionMatrix)
-        outlineShader.setFloat("u_Outline", 0.05f)
+        outlineShader.setFloat("u_Outline", 0.005f)
         campusModel?.draw()
 
         // Reset stencil and depth test states

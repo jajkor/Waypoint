@@ -13,7 +13,6 @@ import android.opengl.GLES32.glLinkProgram
 import android.opengl.GLES32.glShaderSource
 import android.opengl.GLES32.glUniform1f
 import android.opengl.GLES32.glUniform1i
-import android.opengl.GLES32.glUniform2f
 import android.opengl.GLES32.glUniform3f
 import android.opengl.GLES32.glUniformMatrix4fv
 import android.opengl.GLES32.glUseProgram
@@ -64,11 +63,6 @@ class Program(
         uniformName: String,
         f: Float,
     ) = glUniform1f(glGetUniformLocation(id, uniformName), f)
-
-    fun setVector2(
-        uniformName: String,
-        f2: Vector2,
-    ) = glUniform2f(glGetUniformLocation(id, uniformName), f2.x, f2.y)
 
     fun setVector3(
         uniformName: String,

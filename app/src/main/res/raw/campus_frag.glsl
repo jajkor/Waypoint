@@ -35,10 +35,11 @@ void main() {
     vec3 viewDir = normalize(viewPos - FragPos);
     vec3 halfwayDir = normalize(lightDir + viewDir);  // Halfway vector
     float specAngle = max(dot(norm, halfwayDir), 0.0);
-    float specular = pow(specAngle, 32.0f);      // Specular intensity
+    float specular = pow(specAngle, 128.0f);      // Specular intensity
 
     // Output the final fragment color
     if (gl_FrontFacing) {
+        //fragColor = vec4(min(kFinal + specular, 1.0f), 1.0f);
         fragColor = vec4(min(kFinal + specular, 1.0f), 1.0f);
     } else {
         fragColor = vec4(0.0f, 0.0f, 0.0f, 1.0f);
