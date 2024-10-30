@@ -3,6 +3,7 @@ package com.example.waypoint
 import android.app.Activity
 import android.opengl.GLSurfaceView
 import android.os.Bundle
+import com.example.waypoint.renderer.MapGLSurfaceView
 
 class MainActivity : Activity() {
     private lateinit var gLView: GLSurfaceView
@@ -12,7 +13,7 @@ class MainActivity : Activity() {
 
         // Create a GLSurfaceView instance and set it
         // as the ContentView for this Activity.
-        gLView = MyGLSurfaceView(this)
+        gLView = MapGLSurfaceView(this)
         setContentView(gLView)
     }
 }

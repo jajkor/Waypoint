@@ -10,37 +10,33 @@ uniform vec3 viewPos;
 uniform vec3 lightColor;
 uniform vec3 lightPos;
 
-uniform vec3 surfaceColor;
-uniform float diffuseWarm;
-uniform float diffuseCool;
-uniform vec3 warmColor;
-uniform vec3 coolColor;
+uniform vec3 ambientColor; // Ka
+uniform vec3 diffuseColor; // Kd
+uniform vec3 specularColor; // Ks
+uniform float specularComponent; // Ns
 
 void main() {
-    // Normalize the normal vector
+    // Ambient
+    vec3 ambient = 1.0 * ambientColor;
+
+    // Diffuse
     vec3 norm = normalize(Normal);
-
-    // Calculate light direction
     vec3 lightDir = normalize(lightPos - FragPos);
+    float diff = max(dot(lightDir, norm), 0.0);
+    vec3 diffuse = diff * diffuseColor;
 
-    // Diffuse lighting
-    float NdotL = max(dot(norm, lightDir), 0.0f);
-
-    // Gooch shading - interpolation between warm and cool colors
-    vec3 kCool = min(coolColor + diffuseCool * surfaceColor, 1.0f);
-    vec3 kWarm = min(warmColor + diffuseWarm * surfaceColor, 1.0f);
-    vec3 kFinal = mix(kCool, kWarm, NdotL);
-
-    // Calculate the specular component using Blinn-Phong shading
+    // Specular
     vec3 viewDir = normalize(viewPos - FragPos);
-    vec3 halfwayDir = normalize(lightDir + viewDir);  // Halfway vector
-    float specAngle = max(dot(norm, halfwayDir), 0.0);
-    float specular = pow(specAngle, 128.0f);      // Specular intensity
+    vec3 reflectDir = reflect(-lightDir, norm);
+    float spec = 0.0;
+
+    vec3 halfwayDir = normalize(lightDir + viewDir);
+    spec = pow(max(dot(norm, halfwayDir), 0.0), specularComponent);
 
     // Output the final fragment color
     if (gl_FrontFacing) {
-        //fragColor = vec4(min(kFinal + specular, 1.0f), 1.0f);
-        fragColor = vec4(min(kFinal + specular, 1.0f), 1.0f);
+        vec3 specular = specularColor * spec;
+        fragColor = vec4(ambient + diffuse + specular, 1.0);
     } else {
         fragColor = vec4(0.0f, 0.0f, 0.0f, 1.0f);
     }
