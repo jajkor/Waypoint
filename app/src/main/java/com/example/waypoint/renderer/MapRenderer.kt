@@ -127,7 +127,7 @@ class MapRenderer(
                 Uniform("specularComponent", GL_FLOAT, campusModel.getMaterial().specularComponent),
             )
         drawModel(gridQuad, gridShader, false, uniforms)
-        drawModel(campusModel, campusShader, false, uniforms, Vector3(10f, 5f, 10f), Vector3(0.0f, 0.1f, 0.0f))
+        drawModel(campusModel, campusShader, true, uniforms, Vector3(10f, 5f, 10f), Vector3(0.0f, 0.1f, 0.0f))
     }
 
     private fun drawPath(paths: List<Vector3>) {
