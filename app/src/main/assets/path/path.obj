@@ -1,0 +1,6 @@
+# Blender 4.2.2 LTS
+# www.blender.org
+mtllib path.mtl
+o Line
+v 0.00 0.000 0.000
+v 1.000 0.000 0.000
