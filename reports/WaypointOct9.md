@@ -1,0 +1,12 @@
+# Waypoint
+Thomas McLinden, Rob Jajko, Sarim Kazmi, Adam Jeffery Zorgo
+
+# Team Report:
+- Last week: Testing for the application will begin. The model will be imported into Android Studio and we will begin researching real-time location tracking.
+- This week: This week, each team member continued to work on their own seperate tasks. Sarim focused on experimenting with utilizing databases and CRUD operations. Rob improved upon previous rendering code and begun the first stages of creating the UI. Thomas is still looking for a the best way to implement the 3D model and real-time tracking into Android Studio. Adam has begun working on the UI.
+- Next week: Sarim will continue to work on the database functions. Rob will improve upon the current code and make additions to the UI sketches. Thomas will continue to search for sources online that can be used in aiding the creation of real-time tracking for the application. Adam will continue to work on the UI by adding the functions to current existing visual assets.
+# Contributions of individual team members:
+- Thomas: This week, I began looking at ways to begin the early stages of indoor navigation by importing the model into Android Studio with real time tracking on the user. However, my attempts haven't proved successful yet, as I was mostly doing this from scratch. My next step is to find a pre-existing project that I could use as a reference and to have a working beta application to test our current 3D model.
+- Rob: This week I refactored some of the rendering code to improve readability as well as eliminate magic values by adding mtl file parsing. I also started sketching out the apps architecture and UI.
+- Sarim: So far, I have set up SQLite and experimented with various commands for my understanding of database management. I tested CRUD operations and explored advanced querying techniques to improve data retrieval. Additionally, I made key adjustments to our project's relational model to better align it with our requirements.
+- Adam: I have started building out the UI structure with Android studio it isn't functional yet-- but I have a rough idea of major parts of the MVP, and I have also been working on visual assets.
