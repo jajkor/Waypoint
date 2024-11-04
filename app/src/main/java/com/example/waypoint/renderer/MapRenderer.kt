@@ -83,7 +83,7 @@ class MapRenderer(
                 context.resources.readRawTextFile(R.raw.campus_vert),
                 context.resources.readRawTextFile(R.raw.campus_frag),
             )
-        campusModel = ModelLoader(context).loadModel("campus/sutherland_f1.obj", "campus/sutherland_f1.mtl")
+        campusModel = ModelLoader(context).loadModel("campus/3rdfloor.obj", "campus/3rdfloor.mtl")
 
         pathShader =
             Program(
@@ -127,7 +127,7 @@ class MapRenderer(
                 Uniform("specularComponent", GL_FLOAT, campusModel.getMaterial().specularComponent),
             )
         drawModel(gridQuad, gridShader, false, uniforms)
-        drawModel(campusModel, campusShader, true, uniforms, Vector3(10f, 5f, 10f), Vector3(0.0f, 0.1f, 0.0f))
+        drawModel(campusModel, campusShader, true, uniforms, Vector3(10f, 3f, 10f), Vector3(0.0f, 0.1f, 0.0f))
     }
 
     private fun drawPath(paths: List<Vector3>) {
