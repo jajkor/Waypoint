@@ -53,6 +53,10 @@ jobs:
       - name: Run Lint Checks
         run: ./gradlew lint
 
+      # Run Ktlint form
+      - name: Run Ktlint Format
+        run: ./gradlew ktlintFormat
+
       # Run Ktlint checks
       - name: Run Ktlint Checks
         run: ./gradlew ktlintCheck
