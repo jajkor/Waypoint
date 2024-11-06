@@ -32,6 +32,8 @@ class Model(
 
     private val coordsPerVertex: Int = 3
 
+    fun getMaterial(): Material = material
+
     init {
         // Create and bind buffers for vertex data and indices
         glGenBuffers(1, vertexBuffer, 0)
@@ -51,9 +53,7 @@ class Model(
         glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.capacity() * Int.SIZE_BYTES, indices, GL_STATIC_DRAW)
     }
 
-    fun getMaterial(): Material = material
-
-    fun draw() {
+    fun draw(primitiveType: Int) {
         // Enable attributes and bind buffers
         glEnableVertexAttribArray(0)
         glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer[0])
@@ -65,17 +65,12 @@ class Model(
 
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBuffer[0])
 
-        glDrawElements(GL_TRIANGLES, indices.capacity(), GL_UNSIGNED_INT, 0)
-        glDisableVertexAttribArray(0)
-    }
+        if (primitiveType == GL_TRIANGLES) {
+            glDrawElements(GL_TRIANGLES, indices.capacity(), GL_UNSIGNED_INT, 0)
+        } else {
+            glDrawArrays(GL_LINES, 0, vertices.capacity())
+        }
 
-    fun drawPoints() {
-        // Enable attributes and bind buffers
-        glEnableVertexAttribArray(0)
-        glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer[0])
-        glVertexAttribPointer(0, coordsPerVertex, GL_FLOAT, false, 0, 0)
-
-        glDrawArrays(GL_LINES, 0, vertices.capacity())
         glDisableVertexAttribArray(0)
     }
 }

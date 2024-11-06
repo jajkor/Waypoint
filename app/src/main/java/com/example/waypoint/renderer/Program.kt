@@ -12,7 +12,6 @@ import android.opengl.GLES32.glGetUniformLocation
 import android.opengl.GLES32.glLinkProgram
 import android.opengl.GLES32.glShaderSource
 import android.opengl.GLES32.glUniform1f
-import android.opengl.GLES32.glUniform1i
 import android.opengl.GLES32.glUniform3f
 import android.opengl.GLES32.glUniformMatrix4fv
 import android.opengl.GLES32.glUseProgram
@@ -20,7 +19,7 @@ import android.opengl.GLES32.glUseProgram
 class Program(
     vertexShaderCode: String?,
     fragmentShaderCode: String?,
-    geometryShaderCode: String? = null,
+    geometryShaderCode: String? = null
 ) {
     private var id: Int
 
@@ -49,7 +48,7 @@ class Program(
 
     private fun loadShader(
         type: Int,
-        shaderCode: String?,
+        shaderCode: String?
     ): Int {
         // create a vertex shader type (GL_VERTEX_SHADER) or a fragment shader type (GL_FRAGMENT_SHADER)
         return glCreateShader(type).also { shader ->
@@ -61,23 +60,18 @@ class Program(
 
     fun setFloat(
         uniformName: String,
-        f: Float,
+        f: Float
     ) = glUniform1f(glGetUniformLocation(id, uniformName), f)
 
     fun setVector3(
         uniformName: String,
-        f3: Vector3,
+        f3: Vector3
     ) = glUniform3f(glGetUniformLocation(id, uniformName), f3.x, f3.y, f3.z)
-
-    fun setInt(
-        uniformName: String,
-        i: Int,
-    ) = glUniform1i(glGetUniformLocation(id, uniformName), i)
 
     fun setMat4(
         uniformName: String,
         m4: FloatArray,
-        transpose: Boolean = false,
+        transpose: Boolean = false
     ) = glUniformMatrix4fv(glGetUniformLocation(id, uniformName), 1, transpose, m4, 0)
 
     fun use() = glUseProgram(id)

@@ -4,5 +4,5 @@ import android.content.res.Resources
 import androidx.annotation.RawRes
 
 fun Resources.readRawTextFile(
-    @RawRes id: Int,
+    @RawRes id: Int
 ) = openRawResource(id).bufferedReader().use { it.readText() }
