@@ -6,5 +6,5 @@ data class Material(
     val ambientColor: Vector3,
     val diffuseColor: Vector3,
     val specularColor: Vector3,
-    val specularComponent: Float,
+    val specularComponent: Float
 )

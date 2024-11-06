@@ -15,10 +15,4 @@ class Timer {
     }
 
     fun sinceLastFrameSecs() = (SystemClock.elapsedRealtime() - lastFrameMillis) / 1000.0f
-
-    fun sinceStartSecs() = (SystemClock.elapsedRealtime() - startTimeMillis) / 1000.0f
-
-    fun tick() {
-        lastFrameMillis = SystemClock.elapsedRealtime()
-    }
 }

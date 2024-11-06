@@ -1,9 +1,7 @@
-package com.example.waypoint
+package com.example.waypoint.renderer.model
 
 import android.content.Context
 import com.example.waypoint.renderer.Vector3
-import com.example.waypoint.renderer.model.Material
-import com.example.waypoint.renderer.model.Model
 import de.javagl.obj.FloatTuple
 import de.javagl.obj.MtlReader
 import de.javagl.obj.ObjData
@@ -12,11 +10,11 @@ import de.javagl.obj.ObjUtils
 import java.io.File
 
 class ModelLoader(
-    private val context: Context,
+    private val context: Context
 ) {
     fun loadModel(
         objFileName: String,
-        mtlFileName: String,
+        mtlFileName: String
     ): Model {
         val obj =
             context.assets.open(File(objFileName).path).use {
@@ -40,8 +38,8 @@ class ModelLoader(
                 material.ka.toVector3(),
                 material.kd.toVector3(),
                 material.ks.toVector3(),
-                material.ns,
-            ),
+                material.ns
+            )
         )
     }
 }

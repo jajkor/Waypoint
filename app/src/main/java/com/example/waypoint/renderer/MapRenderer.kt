@@ -8,10 +8,12 @@ import android.opengl.GLES32.GL_BLEND
 import android.opengl.GLES32.GL_COLOR_BUFFER_BIT
 import android.opengl.GLES32.GL_DEPTH_BUFFER_BIT
 import android.opengl.GLES32.GL_DEPTH_TEST
+import android.opengl.GLES32.GL_LINES
 import android.opengl.GLES32.GL_MAJOR_VERSION
 import android.opengl.GLES32.GL_MINOR_VERSION
 import android.opengl.GLES32.GL_ONE_MINUS_SRC_ALPHA
 import android.opengl.GLES32.GL_SRC_ALPHA
+import android.opengl.GLES32.GL_TRIANGLES
 import android.opengl.GLES32.glBlendFunc
 import android.opengl.GLES32.glClear
 import android.opengl.GLES32.glClearColor
@@ -21,10 +23,10 @@ import android.opengl.GLES32.glViewport
 import android.opengl.GLSurfaceView
 import android.opengl.Matrix
 import android.util.Log
-import com.example.waypoint.ModelLoader
 import com.example.waypoint.R
 import com.example.waypoint.readRawTextFile
 import com.example.waypoint.renderer.model.Model
+import com.example.waypoint.renderer.model.ModelLoader
 import com.example.waypoint.renderer.model.Uniform
 import com.example.waypoint.renderer.scene.Camera
 import com.example.waypoint.renderer.scene.Light
@@ -83,7 +85,7 @@ class MapRenderer(
                 context.resources.readRawTextFile(R.raw.campus_vert),
                 context.resources.readRawTextFile(R.raw.campus_frag),
             )
-        campusModel = ModelLoader(context).loadModel("campus/sutherland_f1.obj", "campus/sutherland_f1.mtl")
+        campusModel = ModelLoader(context).loadModel("campus/3rdfloor.obj", "campus/3rdfloor.mtl")
 
         pathShader =
             Program(
@@ -110,10 +112,17 @@ class MapRenderer(
 
         viewMatrix = camera.getViewMatrix()
 
-        val paths = mutableListOf(Vector3(0.000f, 1.000f, 0.000f), Vector3(10.000f, 1.000f, 0.000f))
-        drawPath(paths)
+        val pathUniforms =
+            listOf(
+                Uniform("u_View", GL_FLOAT_MAT4, viewMatrix),
+                Uniform("u_Projection", GL_FLOAT_MAT4, projectionMatrix),
+                Uniform("u_Time", GL_FLOAT, timer.sinceLastFrameSecs()),
+                Uniform("u_UserPos", GL_FLOAT_VEC3, Vector3(0.000f, 1.000f, 0.000f)),
+                Uniform("u_NodePos", GL_FLOAT_VEC3, Vector3(10.000f, 1.000f, 0.000f)),
+            )
+        drawModel(pathModel, pathShader, false, pathUniforms, GL_LINES)
 
-        val uniforms =
+        val campusUniforms =
             listOf(
                 Uniform("u_Model", GL_FLOAT_MAT4, modelMatrix),
                 Uniform("u_View", GL_FLOAT_MAT4, viewMatrix),
@@ -126,20 +135,8 @@ class MapRenderer(
                 Uniform("specularColor", GL_FLOAT_VEC3, campusModel.getMaterial().specularColor),
                 Uniform("specularComponent", GL_FLOAT, campusModel.getMaterial().specularComponent),
             )
-        drawModel(gridQuad, gridShader, false, uniforms)
-        drawModel(campusModel, campusShader, false, uniforms, Vector3(10f, 5f, 10f), Vector3(0.0f, 0.1f, 0.0f))
-    }
-
-    private fun drawPath(paths: List<Vector3>) {
-        pathShader.use()
-        Matrix.setIdentityM(modelMatrix, 0)
-        pathShader.setMat4("u_View", viewMatrix)
-        pathShader.setMat4("u_Projection", projectionMatrix)
-        pathShader.setFloat("u_Time", timer.sinceLastFrameSecs()) // https://thebookofshaders.com/03/
-        pathShader.setVector3("u_UserPos", Vector3(0.000f, 1.000f, 0.000f))
-        pathShader.setVector3("u_NodePos", Vector3(10.000f, 1.000f, 0.000f))
-
-        pathModel.drawPoints()
+        drawModel(gridQuad, gridShader, false, campusUniforms, GL_TRIANGLES)
+        drawModel(campusModel, campusShader, true, campusUniforms, GL_TRIANGLES, Vector3(10f, 3f, 10f), Vector3(0.0f, 0.1f, 0.0f))
     }
 
     private fun drawModel(
@@ -147,11 +144,12 @@ class MapRenderer(
         program: Program,
         drawNorms: Boolean,
         uniforms: List<Uniform>,
+        primitiveType: Int,
         scale: Vector3? = null,
         translation: Vector3? = null,
     ) {
         if (drawNorms) {
-            drawModel(model, displayNormalsShader, false, uniforms, scale, translation)
+            drawModel(model, displayNormalsShader, false, uniforms, primitiveType, scale, translation)
         }
 
         program.use()
@@ -170,7 +168,7 @@ class MapRenderer(
             }
         }
 
-        model.draw()
+        model.draw(primitiveType)
     }
 
     override fun onSurfaceChanged(

@@ -1,5 +1,6 @@
 package com.example.waypoint.renderer
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.opengl.GLSurfaceView
 import android.view.GestureDetector
@@ -8,7 +9,7 @@ import android.view.ScaleGestureDetector
 import com.example.waypoint.renderer.scene.Camera
 
 class MapGLSurfaceView(
-    context: Context,
+    context: Context
 ) : GLSurfaceView(context) {
     private val renderer: MapRenderer
     private var camera = Camera()
@@ -30,6 +31,7 @@ class MapGLSurfaceView(
         scaleGestureDetector = ScaleGestureDetector(context, ScaleListener())
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     override fun onTouchEvent(event: MotionEvent): Boolean {
         // Pass the event to both the scale and gesture detectors
         scaleGestureDetector.onTouchEvent(event)
@@ -55,7 +57,7 @@ class MapGLSurfaceView(
             e1: MotionEvent?,
             e2: MotionEvent,
             distanceX: Float,
-            distanceY: Float,
+            distanceY: Float
         ): Boolean {
             // Convert touch movement into camera rotation
             val deltaYaw = distanceX * swipeThreshold
