@@ -1,6 +1,5 @@
 package com.example.waypoint
 
-import com.example.waypoint.renderer.Vector3
 import org.junit.Assert.assertEquals
 import org.junit.Test
 

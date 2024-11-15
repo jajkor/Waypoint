@@ -8,7 +8,6 @@ import android.opengl.GLES32.GL_BLEND
 import android.opengl.GLES32.GL_COLOR_BUFFER_BIT
 import android.opengl.GLES32.GL_DEPTH_BUFFER_BIT
 import android.opengl.GLES32.GL_DEPTH_TEST
-import android.opengl.GLES32.GL_LINES
 import android.opengl.GLES32.GL_MAJOR_VERSION
 import android.opengl.GLES32.GL_MINOR_VERSION
 import android.opengl.GLES32.GL_ONE_MINUS_SRC_ALPHA
@@ -24,6 +23,7 @@ import android.opengl.GLSurfaceView
 import android.opengl.Matrix
 import android.util.Log
 import com.example.waypoint.R
+import com.example.waypoint.Vector3
 import com.example.waypoint.readRawTextFile
 import com.example.waypoint.renderer.model.Model
 import com.example.waypoint.renderer.model.ModelLoader
@@ -78,14 +78,17 @@ class MapRenderer(
                 context.resources.readRawTextFile(R.raw.grid_vert),
                 context.resources.readRawTextFile(R.raw.grid_frag),
             )
-        gridQuad = ModelLoader(context).loadModel("grid/grid.obj", "grid/grid.mtl")
+        gridQuad = ModelLoader(context).loadModel("models/grid/grid.obj", "models/grid/grid.mtl")
 
         campusShader =
             Program(
                 context.resources.readRawTextFile(R.raw.campus_vert),
                 context.resources.readRawTextFile(R.raw.campus_frag),
             )
-        campusModel = ModelLoader(context).loadModel("campus/3rdfloor.obj", "campus/3rdfloor.mtl")
+        campusModel =
+            ModelLoader(
+                context,
+            ).loadModel("campus/rydal_executive_plaza/third_floor/3rdfloor.obj", "campus/rydal_executive_plaza/third_floor/3rdfloor.mtl")
 
         pathShader =
             Program(
@@ -93,7 +96,7 @@ class MapRenderer(
                 context.resources.readRawTextFile(R.raw.path_frag),
                 context.resources.readRawTextFile(R.raw.path_geom),
             )
-        pathModel = ModelLoader(context).loadModel("path/path.obj", "path/path.mtl")
+        pathModel = ModelLoader(context).loadModel("models/path/path.obj", "models/path/path.mtl")
 
         displayNormalsShader =
             Program(
@@ -120,7 +123,7 @@ class MapRenderer(
                 Uniform("u_UserPos", GL_FLOAT_VEC3, Vector3(0.000f, 1.000f, 0.000f)),
                 Uniform("u_NodePos", GL_FLOAT_VEC3, Vector3(10.000f, 1.000f, 0.000f)),
             )
-        drawModel(pathModel, pathShader, false, pathUniforms, GL_LINES)
+        // drawModel(pathModel, pathShader, false, pathUniforms, GL_LINES)
 
         val campusUniforms =
             listOf(
@@ -136,7 +139,7 @@ class MapRenderer(
                 Uniform("specularComponent", GL_FLOAT, campusModel.getMaterial().specularComponent),
             )
         drawModel(gridQuad, gridShader, false, campusUniforms, GL_TRIANGLES)
-        drawModel(campusModel, campusShader, true, campusUniforms, GL_TRIANGLES, Vector3(10f, 3f, 10f), Vector3(0.0f, 0.1f, 0.0f))
+        drawModel(campusModel, campusShader, false, campusUniforms, GL_TRIANGLES, Vector3(10f, 3f, 10f), Vector3(0.0f, 0.1f, 0.0f))
     }
 
     private fun drawModel(

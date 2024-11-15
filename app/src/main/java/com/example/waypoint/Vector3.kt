@@ -1,4 +1,4 @@
-package com.example.waypoint.renderer
+package com.example.waypoint
 
 data class Vector3(
     var x: Float,
