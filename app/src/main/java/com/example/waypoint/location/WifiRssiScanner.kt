@@ -4,6 +4,7 @@ import android.net.wifi.WifiManager
 import android.os.Build
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -113,6 +114,7 @@ class WifiRssiScanner(
 
             // Create a map of BSSID to RSSI readings
             val rssiReadings = targetResults.associate { it.BSSID to it.level }
+            Log.v("RSSI", rssiReadings.toString())
 
             // Use WifiTriangulation to estimate position
             val estimatedPosition = triangulation.estimatePosition(rssiReadings)
