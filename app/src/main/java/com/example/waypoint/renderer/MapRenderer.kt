@@ -26,13 +26,12 @@ import com.example.waypoint.renderer.model.ModelLoader
 import com.example.waypoint.renderer.model.Uniform
 import com.example.waypoint.renderer.scene.Camera
 import com.example.waypoint.renderer.scene.Light
-import com.example.waypoint.renderer.scene.Timer
 import javax.microedition.khronos.egl.EGLConfig
 import javax.microedition.khronos.opengles.GL10
 
 class MapRenderer(
     private val context: Context,
-    private val camera: Camera,
+    private val camera: Camera
 ) : GLSurfaceView.Renderer {
     private lateinit var campusModel: Model
     private lateinit var userModel: Model
@@ -41,7 +40,6 @@ class MapRenderer(
     private lateinit var gridShader: Program
     private lateinit var campusShader: Program
 
-    private var timer: Timer = Timer()
     private var globalLight: Light = Light()
 
     private val backgroundColor: Vector3 = Vector3(0.949f, 0.949f, 0.949f)
@@ -59,7 +57,7 @@ class MapRenderer(
     // Called once to set up the view's OpenGL ES environment
     override fun onSurfaceCreated(
         unused: GL10,
-        config: EGLConfig,
+        config: EGLConfig
     ) {
         glEnable(GL_DEPTH_TEST)
         glEnable(GL_BLEND)
@@ -68,23 +66,23 @@ class MapRenderer(
         gridShader =
             Program(
                 context.resources.readRawTextFile(R.raw.grid_vert),
-                context.resources.readRawTextFile(R.raw.grid_frag),
+                context.resources.readRawTextFile(R.raw.grid_frag)
             )
         gridQuad = ModelLoader(context).loadModel("models/grid/grid.obj", "models/grid/grid.mtl")
 
         campusShader =
             Program(
                 context.resources.readRawTextFile(R.raw.campus_vert),
-                context.resources.readRawTextFile(R.raw.campus_frag),
+                context.resources.readRawTextFile(R.raw.campus_frag)
             )
         campusModel =
             ModelLoader(
-                context,
+                context
             ).loadModel("campus/rydal_executive_plaza/third_floor/3rdfloor.obj", "campus/rydal_executive_plaza/third_floor/3rdfloor.mtl")
 
         userModel =
             ModelLoader(
-                context,
+                context
             ).loadModel("models/user/user.obj", "models/user/user.mtl")
 
         globalLight.lightPosition = Vector3(30.0f, 60f, 30.0f)
@@ -108,7 +106,7 @@ class MapRenderer(
                 Uniform("ambientColor", GL_FLOAT_VEC3, campusModel.getMaterial().ambientColor),
                 Uniform("diffuseColor", GL_FLOAT_VEC3, campusModel.getMaterial().diffuseColor),
                 Uniform("specularColor", GL_FLOAT_VEC3, campusModel.getMaterial().specularColor),
-                Uniform("specularComponent", GL_FLOAT, campusModel.getMaterial().specularComponent),
+                Uniform("specularComponent", GL_FLOAT, campusModel.getMaterial().specularComponent)
             )
         drawModel(gridQuad, gridShader, campusUniforms, GL_TRIANGLES)
         drawModel(campusModel, campusShader, campusUniforms, GL_TRIANGLES, Vector3(10f, 3f, 10f), Vector3(0.0f, 0.1f, 0.0f))
@@ -124,7 +122,7 @@ class MapRenderer(
                 Uniform("ambientColor", GL_FLOAT_VEC3, userModel.getMaterial().ambientColor),
                 Uniform("diffuseColor", GL_FLOAT_VEC3, userModel.getMaterial().diffuseColor),
                 Uniform("specularColor", GL_FLOAT_VEC3, userModel.getMaterial().specularColor),
-                Uniform("specularComponent", GL_FLOAT, userModel.getMaterial().specularComponent),
+                Uniform("specularComponent", GL_FLOAT, userModel.getMaterial().specularComponent)
             )
         drawModel(userModel, campusShader, userUniforms, GL_TRIANGLES, Vector3(0.25f, 0.25f, 0.25f), Vector3(0.0f, 4.0f, 0.0f))
     }
@@ -135,7 +133,7 @@ class MapRenderer(
         uniforms: List<Uniform>,
         primitiveType: Int,
         scale: Vector3? = null,
-        translation: Vector3? = null,
+        translation: Vector3? = null
     ) {
         program.use()
         Matrix.setIdentityM(modelMatrix, 0)
@@ -159,7 +157,7 @@ class MapRenderer(
     override fun onSurfaceChanged(
         unused: GL10?,
         width: Int,
-        height: Int,
+        height: Int
     ) {
         glViewport(0, 0, width, height)
 

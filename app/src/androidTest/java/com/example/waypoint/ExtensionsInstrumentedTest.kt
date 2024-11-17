@@ -22,7 +22,7 @@ class ExtensionsInstrumentedTest {
 
         assertEquals(
             "Read from raw really works!",
-            appContext.resources.readRawTextFile(R.raw.test_file),
+            appContext.resources.readRawTextFile(R.raw.test_file)
         )
     }
 }

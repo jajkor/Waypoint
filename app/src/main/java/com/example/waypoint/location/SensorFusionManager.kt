@@ -14,7 +14,7 @@ import kotlin.math.sqrt
 
 class SensorFusionManager(
     private val context: Context,
-    private val onPositionUpdate: (Vector2) -> Unit,
+    private val onPositionUpdate: (Vector2) -> Unit
 ) : SensorEventListener {
     private val sensorManager = context.getSystemService(Context.SENSOR_SERVICE) as SensorManager
     private val accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
@@ -46,17 +46,17 @@ class SensorFusionManager(
         sensorManager.registerListener(
             this,
             accelerometer,
-            SensorManager.SENSOR_DELAY_NORMAL,
+            SensorManager.SENSOR_DELAY_NORMAL
         )
         sensorManager.registerListener(
             this,
             magnetometer,
-            SensorManager.SENSOR_DELAY_NORMAL,
+            SensorManager.SENSOR_DELAY_NORMAL
         )
         sensorManager.registerListener(
             this,
             gyroscope,
-            SensorManager.SENSOR_DELAY_NORMAL,
+            SensorManager.SENSOR_DELAY_NORMAL
         )
     }
 
@@ -82,7 +82,7 @@ class SensorFusionManager(
 
     override fun onAccuracyChanged(
         sensor: Sensor?,
-        accuracy: Int,
+        accuracy: Int
     ) {}
 
     private fun detectStep(acceleration: FloatArray) {
@@ -90,7 +90,7 @@ class SensorFusionManager(
             sqrt(
                 acceleration[0] * acceleration[0] +
                     acceleration[1] * acceleration[1] +
-                    acceleration[2] * acceleration[2],
+                    acceleration[2] * acceleration[2]
             )
 
         val delta =
@@ -98,7 +98,7 @@ class SensorFusionManager(
                 sqrt(
                     lastAcceleration[0] * lastAcceleration[0] +
                         lastAcceleration[1] * lastAcceleration[1] +
-                        lastAcceleration[2] * lastAcceleration[2],
+                        lastAcceleration[2] * lastAcceleration[2]
                 )
 
         System.arraycopy(acceleration, 0, lastAcceleration, 0, 3)
@@ -117,7 +117,7 @@ class SensorFusionManager(
             rotationMatrix,
             null,
             accelerometerReading,
-            magnetometerReading,
+            magnetometerReading
         )
 
         SensorManager.getOrientation(rotationMatrix, orientationAngles)
@@ -142,7 +142,7 @@ class SensorFusionManager(
         val deadReckoningPosition =
             Vector2(
                 currentPosition.x + dx,
-                currentPosition.y + dy,
+                currentPosition.y + dy
             )
 
         // Update Kalman filter with dead reckoning position
@@ -168,7 +168,7 @@ class SensorFusionManager(
             """
             WiFi Position: $wifiPosition
             Fused Position: $fusedPosition
-            """.trimIndent(),
+            """.trimIndent()
         )
 
         // Notify position update

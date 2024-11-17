@@ -10,7 +10,7 @@ import kotlin.math.*
 
 class WifiTriangulation(
     private val context: Context,
-    data: LocationData,
+    data: LocationData
 ) {
     private val knownAccessPoints: MutableMap<String, AccessPoint>
     private val calibrationManager = CalibrationManager(context)
@@ -23,7 +23,7 @@ class WifiTriangulation(
             "VERY_CLOSE" to 1.2, // 0-3 meters
             "CLOSE" to 1.5, // 3-5 meters
             "MEDIUM" to 1.8, // 5-10 meters
-            "FAR" to 2.2, // >10 meters
+            "FAR" to 2.2 // >10 meters
         )
 
     init {
@@ -42,7 +42,7 @@ class WifiTriangulation(
                             if (isCalibrationValid) {
                                 ap.copy(
                                     referenceRSSI = calibrationData.referenceRSSI,
-                                    environmentalFactor = calibrationData.environmentalFactor,
+                                    environmentalFactor = calibrationData.environmentalFactor
                                 )
                             } else {
                                 ap
@@ -75,12 +75,12 @@ class WifiTriangulation(
     fun saveCalibration(
         bssid: String,
         referenceRSSI: Int,
-        environmentalFactor: Double,
+        environmentalFactor: Double
     ) {
         val calibrationData =
             CalibrationData(
                 referenceRSSI = referenceRSSI,
-                environmentalFactor = environmentalFactor,
+                environmentalFactor = environmentalFactor
             )
         calibrationManager.saveCalibrationData(bssid, calibrationData)
 
@@ -89,7 +89,7 @@ class WifiTriangulation(
             knownAccessPoints[bssid] =
                 ap.copy(
                     referenceRSSI = referenceRSSI,
-                    environmentalFactor = environmentalFactor,
+                    environmentalFactor = environmentalFactor
                 )
         }
     }
@@ -101,7 +101,7 @@ class WifiTriangulation(
         rssi: Int,
         referenceRssi: Int,
         environmentalFactor: Double,
-        bssid: String,
+        bssid: String
     ): Double {
         // Add RSSI to history
         rssiHistory[bssid]?.apply {
@@ -171,7 +171,7 @@ class WifiTriangulation(
                 RSSI: ${rssiReadings.map { (bssid, rssi) ->
                     "${knownAccessPoints[bssid]?.ssid}: ${rssi}dBm"
                 }}
-                """.trimIndent(),
+                """.trimIndent()
             )
         }
 
@@ -206,7 +206,7 @@ class WifiTriangulation(
                 sortedDists[n - 1].pow(2) - sortedDists[i].pow(2) +
                     sortedAPs[i].xPos.pow(2) + sortedAPs[i].yPos.pow(2) -
                     sortedAPs[n - 1].xPos.pow(2) - sortedAPs[n - 1].yPos.pow(2)
-            ) * weight
+                ) * weight
         }
 
         return try {
@@ -219,7 +219,7 @@ class WifiTriangulation(
 
     private fun calculateMatrixPosition(
         a: Array<DoubleArray>,
-        b: DoubleArray,
+        b: DoubleArray
     ): Vector2? {
         val n = a[0].size
 
@@ -286,7 +286,7 @@ class WifiTriangulation(
         // Clamp position to valid range
         return Vector2(
             x = position.x.coerceIn(minX, maxX),
-            y = position.y.coerceIn(minY, maxY),
+            y = position.y.coerceIn(minY, maxY)
         )
     }
 
@@ -297,7 +297,7 @@ class WifiTriangulation(
         fun startCalibration(
             context: Context,
             accessPoints: List<AccessPoint>,
-            onComplete: (Map<String, Int>) -> Unit,
+            onComplete: (Map<String, Int>) -> Unit
         ) {
             val wifiManager =
                 context.applicationContext

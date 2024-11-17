@@ -50,7 +50,7 @@ class MainActivity : AppCompatActivity() {
             WifiRssiScanner(
                 this,
                 locationData,
-                triangulation,
+                triangulation
             ) { updatedRssiReadings ->
                 if (updatedRssiReadings.size >= 3) {
                     val estimatedPosition = triangulation.estimatePosition(updatedRssiReadings)
@@ -111,7 +111,7 @@ class MainActivity : AppCompatActivity() {
     private fun calibrateNextAP(
         accessPoints: List<AccessPoint>,
         apIndex: Int,
-        distanceIndex: Int,
+        distanceIndex: Int
     ) {
         if (apIndex >= accessPoints.size) {
             // All APs calibrated
@@ -143,7 +143,7 @@ class MainActivity : AppCompatActivity() {
                 
                 Progress: AP ${apIndex + 1}/${accessPoints.size}
                 Distance: ${currentDistance}m
-                """.trimIndent(),
+                """.trimIndent()
             ).setPositiveButton("Start") { _, _ ->
                 showCalibrationProgress(ap, currentDistance) { success ->
                     if (success) {
@@ -162,7 +162,7 @@ class MainActivity : AppCompatActivity() {
     private fun showCalibrationProgress(
         ap: AccessPoint,
         distance: Double,
-        onComplete: (Boolean) -> Unit,
+        onComplete: (Boolean) -> Unit
     ) {
         val progressDialog =
             ProgressDialog(this).apply {
@@ -194,7 +194,7 @@ class MainActivity : AppCompatActivity() {
                     .setPositiveButton("Retry") { _, _ -> onComplete(false) }
                     .setNegativeButton("Cancel", null)
                     .show()
-            },
+            }
         )
     }
 

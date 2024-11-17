@@ -7,7 +7,7 @@ import kotlin.math.sin
 
 class Camera(
     private var position: Vector3 = Vector3(0.0f, 0.0f, 0.0f),
-    private var pivot: Vector3 = Vector3(0.0f, 0.0f, 0.0f),
+    private var pivot: Vector3 = Vector3(0.0f, 0.0f, 0.0f)
 ) {
     private var yaw: Float = 0f // Horizontal rotation angle
     private var pitch: Float = 89f // Vertical rotation angle
@@ -57,7 +57,7 @@ class Camera(
 
     fun rotate(
         yawDelta: Float,
-        pitchDelta: Float,
+        pitchDelta: Float
     ) {
         yaw += yawDelta
         pitch = 20f.coerceAtLeast(90f.coerceAtMost(pitch + pitchDelta)) // Clamp pitch to avoid flipping
@@ -78,7 +78,7 @@ class Camera(
             pivot.z,
             0f,
             1f,
-            0f,
+            0f
         )
         return viewMatrix
     }

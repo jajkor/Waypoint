@@ -14,23 +14,23 @@ import kotlin.math.log10
 data class DistanceReadings(
     val distance: Double,
     val rssiValues: List<Int>,
-    val timestamp: Long = System.currentTimeMillis(),
+    val timestamp: Long = System.currentTimeMillis()
 )
 
 data class CalibrationData(
     val referenceRSSI: Int,
     val environmentalFactor: Double,
     val lastCalibrationDate: Long = System.currentTimeMillis(),
-    val distanceReadings: Map<Double, DistanceReadings> = mapOf(),
+    val distanceReadings: Map<Double, DistanceReadings> = mapOf()
 )
 
 class CalibrationManager(
-    context: Context,
+    context: Context
 ) {
     private val preferences: SharedPreferences =
         context.getSharedPreferences(
             "wifi_calibration",
-            Context.MODE_PRIVATE,
+            Context.MODE_PRIVATE
         )
     private val gson = Gson()
     private val wifiManager: WifiManager = context.applicationContext.getSystemService(Context.WIFI_SERVICE) as WifiManager
@@ -49,7 +49,7 @@ class CalibrationManager(
         currentDistance: Double,
         onProgress: (Int, String) -> Unit,
         onDistanceComplete: (Double) -> Unit,
-        onError: (String) -> Unit,
+        onError: (String) -> Unit
     ) {
         if (currentDistance !in calibrationDistances) {
             onError("Invalid calibration distance: $currentDistance")
@@ -74,7 +74,7 @@ class CalibrationManager(
                                 val progress = (scanCount * 100) / readingsPerDistance
                                 onProgress(
                                     progress,
-                                    "Collecting reading $scanCount of $readingsPerDistance at ${currentDistance}m",
+                                    "Collecting reading $scanCount of $readingsPerDistance at ${currentDistance}m"
                                 )
 
                                 handler.postDelayed(this, scanInterval)
@@ -97,7 +97,7 @@ class CalibrationManager(
     private fun saveDistanceReadings(
         bssid: String,
         distance: Double,
-        readings: List<Int>,
+        readings: List<Int>
     ) {
         Log.d("CalibrationManager", "Saving readings for distance $distance: $readings")
 
@@ -120,7 +120,7 @@ class CalibrationManager(
             updatedReadings[distance] =
                 DistanceReadings(
                     distance = distance,
-                    rssiValues = readings.filter { it < 0 }, // RSSI values should always be negative
+                    rssiValues = readings.filter { it < 0 } // RSSI values should always be negative
                 )
 
             // Calculate new calibration parameters
@@ -136,7 +136,7 @@ class CalibrationManager(
                 CalibrationData(
                     referenceRSSI = referenceRSSI,
                     environmentalFactor = environmentalFactor,
-                    distanceReadings = updatedReadings,
+                    distanceReadings = updatedReadings
                 )
 
             // Log before saving
@@ -147,7 +147,7 @@ class CalibrationManager(
                 Reference RSSI: $referenceRSSI
                 Environmental Factor: $environmentalFactor
                 Number of readings: ${updatedReadings.size}
-                """.trimIndent(),
+                """.trimIndent()
             )
 
             saveCalibrationData(bssid, newCalibrationData)
@@ -191,7 +191,7 @@ class CalibrationManager(
                                     Avg RSSI: $avgRSSI
                                     Path Loss: $pathLoss
                                     Factor: $factor
-                                    """.trimIndent(),
+                                    """.trimIndent()
                                 )
                             } else {
                                 Log.w("CalibrationManager", "Invalid factor calculated: $factor")
@@ -218,7 +218,7 @@ class CalibrationManager(
 
     fun saveCalibrationData(
         bssid: String,
-        data: CalibrationData,
+        data: CalibrationData
     ) {
         preferences.edit().putString(bssid, gson.toJson(data)).apply()
     }
@@ -253,8 +253,4 @@ class CalibrationManager(
         calibrationDistances.all { distance ->
             data.distanceReadings.containsKey(distance)
         }
-
-    fun clearCalibrationData() {
-        preferences.edit().clear().apply()
-    }
 }

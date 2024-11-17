@@ -15,7 +15,7 @@ class WifiRssiScanner(
     private val context: Context,
     private val data: LocationData, // Path to the JSON file
     private val triangulation: WifiTriangulation, // Instance of WifiTriangulation
-    private val onRssiUpdate: (Map<String, Int>) -> Unit,
+    private val onRssiUpdate: (Map<String, Int>) -> Unit
 ) {
     private val wifiManager: WifiManager by lazy {
         context.applicationContext.getSystemService(Context.WIFI_SERVICE) as WifiManager
@@ -59,7 +59,7 @@ class WifiRssiScanner(
         // Location permissions (required for WiFi scanning)
         if (ContextCompat.checkSelfPermission(
                 context,
-                android.Manifest.permission.ACCESS_FINE_LOCATION,
+                android.Manifest.permission.ACCESS_FINE_LOCATION
             ) != PackageManager.PERMISSION_GRANTED
         ) {
             permissionsToRequest.add(android.Manifest.permission.ACCESS_FINE_LOCATION)
@@ -69,7 +69,7 @@ class WifiRssiScanner(
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             if (ContextCompat.checkSelfPermission(
                     context,
-                    android.Manifest.permission.NEARBY_WIFI_DEVICES,
+                    android.Manifest.permission.NEARBY_WIFI_DEVICES
                 ) != PackageManager.PERMISSION_GRANTED
             ) {
                 permissionsToRequest.add(android.Manifest.permission.NEARBY_WIFI_DEVICES)
@@ -82,7 +82,7 @@ class WifiRssiScanner(
                 ActivityCompat.requestPermissions(
                     context,
                     permissionsToRequest.toTypedArray(),
-                    PERMISSION_REQUEST_CODE,
+                    PERMISSION_REQUEST_CODE
                 )
                 return false
             }
@@ -96,7 +96,7 @@ class WifiRssiScanner(
         // Ensure permissions are granted before scanning
         if (ActivityCompat.checkSelfPermission(
                 context,
-                android.Manifest.permission.ACCESS_FINE_LOCATION,
+                android.Manifest.permission.ACCESS_FINE_LOCATION
             ) != PackageManager.PERMISSION_GRANTED
         ) {
             return

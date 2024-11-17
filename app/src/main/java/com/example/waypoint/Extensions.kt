@@ -8,7 +8,7 @@ import java.io.InputStreamReader
 
 fun loadJsonFromAssets(
     context: Context,
-    fileName: String,
+    fileName: String
 ): String {
     val inputStream = context.assets.open(fileName)
     val bufferedReader = BufferedReader(InputStreamReader(inputStream))
@@ -16,5 +16,5 @@ fun loadJsonFromAssets(
 }
 
 fun Resources.readRawTextFile(
-    @RawRes id: Int,
+    @RawRes id: Int
 ) = openRawResource(id).bufferedReader().use { it.readText() }
