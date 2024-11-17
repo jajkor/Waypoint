@@ -1,20 +1,20 @@
 package com.example.waypoint.renderer.model
 
-import android.opengl.GLES32.GL_ARRAY_BUFFER
-import android.opengl.GLES32.GL_ELEMENT_ARRAY_BUFFER
-import android.opengl.GLES32.GL_FLOAT
-import android.opengl.GLES32.GL_LINES
-import android.opengl.GLES32.GL_STATIC_DRAW
-import android.opengl.GLES32.GL_TRIANGLES
-import android.opengl.GLES32.GL_UNSIGNED_INT
-import android.opengl.GLES32.glBindBuffer
-import android.opengl.GLES32.glBufferData
-import android.opengl.GLES32.glDisableVertexAttribArray
-import android.opengl.GLES32.glDrawArrays
-import android.opengl.GLES32.glDrawElements
-import android.opengl.GLES32.glEnableVertexAttribArray
-import android.opengl.GLES32.glGenBuffers
-import android.opengl.GLES32.glVertexAttribPointer
+import android.opengl.GLES30.GL_ARRAY_BUFFER
+import android.opengl.GLES30.GL_ELEMENT_ARRAY_BUFFER
+import android.opengl.GLES30.GL_FLOAT
+import android.opengl.GLES30.GL_LINES
+import android.opengl.GLES30.GL_STATIC_DRAW
+import android.opengl.GLES30.GL_TRIANGLES
+import android.opengl.GLES30.GL_UNSIGNED_INT
+import android.opengl.GLES30.glBindBuffer
+import android.opengl.GLES30.glBufferData
+import android.opengl.GLES30.glDisableVertexAttribArray
+import android.opengl.GLES30.glDrawArrays
+import android.opengl.GLES30.glDrawElements
+import android.opengl.GLES30.glEnableVertexAttribArray
+import android.opengl.GLES30.glGenBuffers
+import android.opengl.GLES30.glVertexAttribPointer
 import java.nio.FloatBuffer
 import java.nio.IntBuffer
 
