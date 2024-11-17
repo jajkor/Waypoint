@@ -1,3 +1,5 @@
+package com.example.waypoint.location
+
 import android.content.Context
 import android.content.pm.PackageManager
 import android.net.wifi.WifiManager
@@ -8,14 +10,11 @@ import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import com.example.waypoint.location.LocationData
-import com.example.waypoint.location.WifiTriangulation
 
 class WifiRssiScanner(
     private val context: Context,
     private val data: LocationData, // Path to the JSON file
-    private val triangulation: WifiTriangulation, // Instance of WifiTriangulation
-    private val onRssiUpdate: (Map<String, Int>) -> Unit
+    private val onRssiUpdate: (Map<String, Int>) -> Unit,
 ) {
     private val wifiManager: WifiManager by lazy {
         context.applicationContext.getSystemService(Context.WIFI_SERVICE) as WifiManager
@@ -59,7 +58,7 @@ class WifiRssiScanner(
         // Location permissions (required for WiFi scanning)
         if (ContextCompat.checkSelfPermission(
                 context,
-                android.Manifest.permission.ACCESS_FINE_LOCATION
+                android.Manifest.permission.ACCESS_FINE_LOCATION,
             ) != PackageManager.PERMISSION_GRANTED
         ) {
             permissionsToRequest.add(android.Manifest.permission.ACCESS_FINE_LOCATION)
@@ -69,7 +68,7 @@ class WifiRssiScanner(
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             if (ContextCompat.checkSelfPermission(
                     context,
-                    android.Manifest.permission.NEARBY_WIFI_DEVICES
+                    android.Manifest.permission.NEARBY_WIFI_DEVICES,
                 ) != PackageManager.PERMISSION_GRANTED
             ) {
                 permissionsToRequest.add(android.Manifest.permission.NEARBY_WIFI_DEVICES)
@@ -82,7 +81,7 @@ class WifiRssiScanner(
                 ActivityCompat.requestPermissions(
                     context,
                     permissionsToRequest.toTypedArray(),
-                    PERMISSION_REQUEST_CODE
+                    PERMISSION_REQUEST_CODE,
                 )
                 return false
             }
@@ -96,7 +95,7 @@ class WifiRssiScanner(
         // Ensure permissions are granted before scanning
         if (ActivityCompat.checkSelfPermission(
                 context,
-                android.Manifest.permission.ACCESS_FINE_LOCATION
+                android.Manifest.permission.ACCESS_FINE_LOCATION,
             ) != PackageManager.PERMISSION_GRANTED
         ) {
             return
@@ -115,12 +114,6 @@ class WifiRssiScanner(
             // Create a map of BSSID to RSSI readings
             val rssiReadings = targetResults.associate { it.BSSID to it.level }
             Log.v("RSSI", rssiReadings.toString())
-
-            // Use WifiTriangulation to estimate position
-            val estimatedPosition = triangulation.estimatePosition(rssiReadings)
-            if (estimatedPosition != null) {
-                println("Estimated Position: $estimatedPosition")
-            }
         }
     }
 

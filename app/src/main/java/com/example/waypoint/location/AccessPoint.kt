@@ -11,16 +11,16 @@ data class AccessPoint(
     val xPos: Double,
     val yPos: Double,
     val referenceRSSI: Int,
-    val environmentalFactor: Double // 2.0 (Free Space):,2.5 - 3.5 (Indoor Environments),4.0 - 6.0 (Obstructed Indoor Environments)
+    val environmentalFactor: Double,
 )
 
 data class LocationData(
-    @SerializedName("access-points") val accessPoints: List<AccessPoint>
+    @SerializedName("access-points") val accessPoints: List<AccessPoint>,
 )
 
 fun parseJsonWithGson(
     context: Context,
-    fileName: String
+    fileName: String,
 ): LocationData {
     val json = loadJsonFromAssets(context, fileName)
     val gson = Gson()
