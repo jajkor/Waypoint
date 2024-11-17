@@ -9,7 +9,7 @@ import android.view.ScaleGestureDetector
 import com.example.waypoint.renderer.scene.Camera
 
 class MapGLSurfaceView(
-    context: Context,
+    context: Context
 ) : GLSurfaceView(context) {
     private val renderer: MapRenderer
     private var camera = Camera()
@@ -59,7 +59,7 @@ class MapGLSurfaceView(
             e1: MotionEvent?,
             e2: MotionEvent,
             distanceX: Float,
-            distanceY: Float,
+            distanceY: Float
         ): Boolean {
             // Convert touch movement into camera rotation
             val deltaYaw = distanceX * swipeThreshold

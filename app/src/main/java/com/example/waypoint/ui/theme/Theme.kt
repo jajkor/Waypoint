@@ -27,7 +27,7 @@ private val DarkColorScheme =
         onSecondary = Color.White,
         onTertiary = Color.White,
         onBackground = Color(0xFFE6E1E5),
-        onSurface = Color(0xFFE6E1E5),
+        onSurface = Color(0xFFE6E1E5)
     )
 
 private val LightColorScheme =
@@ -41,7 +41,7 @@ private val LightColorScheme =
         onSecondary = Color.White,
         onTertiary = Color.White,
         onBackground = Color(0xFF1C1B1F),
-        onSurface = Color(0xFF1C1B1F),
+        onSurface = Color(0xFF1C1B1F)
     )
 
 @Composable
@@ -49,7 +49,7 @@ fun waypointTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     // Dynamic color is available on Android 12+
     dynamicColor: Boolean = true,
-    content: @Composable () -> Unit,
+    content: @Composable () -> Unit
 ) {
     val colorScheme =
         when {
@@ -72,7 +72,7 @@ fun waypointTheme(
     MaterialTheme(
         colorScheme = colorScheme,
         typography = Typography,
-        content = content,
+        content = content
     )
 }
 

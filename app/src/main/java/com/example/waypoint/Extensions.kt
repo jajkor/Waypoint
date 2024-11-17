@@ -6,7 +6,7 @@ import org.json.JSONArray
 import org.json.JSONObject
 
 fun Resources.readRawTextFile(
-    @RawRes id: Int,
+    @RawRes id: Int
 ) = openRawResource(id).bufferedReader().use { it.readText() }
 
 fun JSONObject.toMap(): Map<String, Any> {

@@ -18,14 +18,17 @@ import kotlinx.coroutines.launch
 import org.json.JSONObject
 
 class MainActivity : AppCompatActivity() {
+    @Suppress("ktlint:standard:backing-property-naming")
     private var _mapGLSurfaceView: MapGLSurfaceView? = null
-    val mapGLSurfaceView get() = _mapGLSurfaceView!!
+    private val mapGLSurfaceView get() = _mapGLSurfaceView!!
 
+    @Suppress("ktlint:standard:backing-property-naming")
     private var _toolbar: Toolbar? = null
-    val toolbar get() = _toolbar!!
+    private val toolbar get() = _toolbar!!
 
+    @Suppress("ktlint:standard:backing-property-naming")
     private var _toggleButton: MaterialButton? = null
-    val toggleButton get() = _toggleButton!!
+    private val toggleButton get() = _toggleButton!!
 
     private var is3DMode = true
     private lateinit var renderer: MapRenderer

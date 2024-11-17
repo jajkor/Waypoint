@@ -10,11 +10,11 @@ import de.javagl.obj.ObjUtils
 import java.io.File
 
 class ModelLoader(
-    private val context: Context,
+    private val context: Context
 ) {
     fun loadModel(
         objFileName: String,
-        mtlFileName: String,
+        mtlFileName: String
     ): Model {
         val obj =
             context.assets.open(File(objFileName).path).use {
@@ -38,8 +38,8 @@ class ModelLoader(
                 material.ka.toVector3(),
                 material.kd.toVector3(),
                 material.ks.toVector3(),
-                material.ns,
-            ),
+                material.ns
+            )
         )
     }
 }
