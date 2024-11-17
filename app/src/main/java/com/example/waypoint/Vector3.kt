@@ -3,7 +3,7 @@ package com.example.waypoint
 data class Vector3(
     var x: Float,
     var y: Float,
-    var z: Float
+    var z: Float,
 ) {
     // Vector addition
     operator fun plus(other: Vector3): Vector3 = Vector3(x + other.x, y + other.y, z + other.z)

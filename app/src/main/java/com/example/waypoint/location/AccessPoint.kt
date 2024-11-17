@@ -1,28 +1,26 @@
 package com.example.waypoint.location
 
-import android.content.Context
-import com.example.waypoint.loadJsonFromAssets
-import com.google.gson.Gson
-import com.google.gson.annotations.SerializedName
+import com.example.waypoint.Vector2
 
 data class AccessPoint(
     val ssid: String,
     val bssid: String,
-    val xPos: Double,
-    val yPos: Double,
+    val position: Vector2,
     val referenceRSSI: Int,
     val environmentalFactor: Double,
-)
-
-data class LocationData(
-    @SerializedName("access-points") val accessPoints: List<AccessPoint>,
-)
-
-fun parseJsonWithGson(
-    context: Context,
-    fileName: String,
-): LocationData {
-    val json = loadJsonFromAssets(context, fileName)
-    val gson = Gson()
-    return gson.fromJson(json, LocationData::class.java)
+) {
+    companion object {
+        fun fromJson(json: Map<String, Any>): AccessPoint =
+            AccessPoint(
+                ssid = json["ssid"] as String,
+                bssid = json["bssid"] as String,
+                position =
+                    Vector2(
+                        (json["xPos"] as Number).toFloat(),
+                        (json["yPos"] as Number).toFloat(),
+                    ),
+                referenceRSSI = (json["referenceRSSI"] as Number).toInt(),
+                environmentalFactor = (json["environmentalFactor"] as Number).toDouble(),
+            )
+    }
 }

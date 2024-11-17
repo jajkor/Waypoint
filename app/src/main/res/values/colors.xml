@@ -1,10 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="purple_200">#FFBB86FC</color>
-    <color name="purple_500">#FF6200EE</color>
-    <color name="purple_700">#FF3700B3</color>
-    <color name="teal_200">#FF03DAC5</color>
-    <color name="teal_700">#FF018786</color>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
+    <!-- Penn State Brand Colors -->
+    <color name="penn_state_blue">#041E42</color>
+    <color name="penn_state_blue_dark">#021631</color>
+    <color name="penn_state_white">#FFFFFF</color>
+
+    <!-- Theme Colors (mapping to Material Theme attributes) -->
+    <color name="primary">@color/penn_state_blue</color>
+    <color name="primary_variant">@color/penn_state_blue_dark</color>
+    <color name="on_primary">@color/penn_state_white</color>
+    <color name="secondary">@color/penn_state_blue</color>
+    <color name="secondary_variant">@color/penn_state_blue_dark</color>
+    <color name="on_secondary">@color/penn_state_white</color>
+
+    <!-- Status Bar -->
+    <color name="status_bar">@color/penn_state_blue</color>
+
+    <!-- Background Colors -->
+    <color name="background">@color/penn_state_white</color>
+    <color name="on_background">@color/penn_state_blue</color>
+
+    <!-- Surface Colors -->
+    <color name="surface">@color/penn_state_white</color>
+    <color name="on_surface">@color/penn_state_blue</color>
 </resources>

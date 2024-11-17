@@ -7,7 +7,7 @@ import kotlin.math.sin
 
 class Camera(
     private var position: Vector3 = Vector3(0.0f, 0.0f, 0.0f),
-    private var pivot: Vector3 = Vector3(0.0f, 0.0f, 0.0f)
+    private var pivot: Vector3 = Vector3(0.0f, 0.0f, 0.0f),
 ) {
     private var yaw: Float = 0f // Horizontal rotation angle
     private var pitch: Float = 89f // Vertical rotation angle
@@ -34,19 +34,20 @@ class Camera(
 
     fun getPosition(): Vector3 = position
 
+    fun getPivot(): Vector3 = pivot
+
     fun setPivot(pivot: Vector3) {
         this.pivot = pivot
     }
 
+    fun setPitch(pitch: Float) {
+        this.pitch = pitch
+    }
+
     fun getFreeLook() = freeLook
 
-    fun toggleFreeLook() {
-        if (freeLook) {
-            this.pitch = 90f
-            freeLook = false
-        } else {
-            freeLook = true
-        }
+    fun setFreeLook(freeLook: Boolean) {
+        this.freeLook = freeLook
     }
 
     // Update zoom by adjusting the distance from the pivot point
@@ -57,10 +58,10 @@ class Camera(
 
     fun rotate(
         yawDelta: Float,
-        pitchDelta: Float
+        pitchDelta: Float,
     ) {
         yaw += yawDelta
-        pitch = 20f.coerceAtLeast(90f.coerceAtMost(pitch + pitchDelta)) // Clamp pitch to avoid flipping
+        pitch = 20f.coerceAtLeast(89f.coerceAtMost(pitch + pitchDelta)) // Clamp pitch to avoid flipping
     }
 
     fun getViewMatrix(): FloatArray {
@@ -78,7 +79,7 @@ class Camera(
             pivot.z,
             0f,
             1f,
-            0f
+            0f,
         )
         return viewMatrix
     }
