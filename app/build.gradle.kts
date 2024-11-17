@@ -64,6 +64,8 @@ dependencies {
     implementation(files("libs/obj-0.4.0.jar"))
     implementation(libs.androidx.recyclerview)
     implementation(libs.androidx.appcompat)
+    implementation(libs.androidx.constraintlayout)
+    implementation(libs.material)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -72,4 +74,8 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
     implementation(kotlin("script-runtime"))
+    // Material Components for Chip
+    implementation ("com.google.android.material:material:1.9.0") // or the latest version
+    // ConstraintLayout library
+    implementation ("androidx.constraintlayout:constraintlayout:2.1.4") // or the latest version
 }

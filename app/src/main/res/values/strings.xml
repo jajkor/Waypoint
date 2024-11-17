@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">Waypoint</string>
+    <string name="BuildingName">Building Name</string>
+    <string name="SelectMap">Back</string>
+    <string name="SelectMapDescription">Button to open and select a map for navigation.</string>
+    <string name="ToggleView">2D/3D</string>
+    <string name="ToggleViewDescription">Toggle between 2D and 3D views</string>
+    <string name="SelectFloor">Select a floor</string>
+    <string name="SelectFloorDescription">Spinner to select a floor in the building</string>
 </resources>
