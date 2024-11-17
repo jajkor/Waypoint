@@ -1,7 +1,7 @@
 package com.example.waypoint.renderer.scene
 
 import android.opengl.Matrix
-import com.example.waypoint.renderer.Vector3
+import com.example.waypoint.Vector3
 import kotlin.math.cos
 import kotlin.math.sin
 
@@ -12,6 +12,7 @@ class Camera(
     private var yaw: Float = 0f // Horizontal rotation angle
     private var pitch: Float = 89f // Vertical rotation angle
     private var distanceFromPivot: Float = 30f // Distance from pivot point (for zoom)
+    private var freeLook: Boolean = true
 
     // Limits for how close or far the camera can zoom
     private val minDistance: Float = 10f // Minimum zoom (closest)
@@ -37,6 +38,17 @@ class Camera(
         this.pivot = pivot
     }
 
+    fun getFreeLook() = freeLook
+
+    fun toggleFreeLook() {
+        if (freeLook) {
+            this.pitch = 90f
+            freeLook = false
+        } else {
+            freeLook = true
+        }
+    }
+
     // Update zoom by adjusting the distance from the pivot point
     fun zoom(scaleFactor: Float) {
         // Increase or decrease distance, clamp between minDistance and maxDistance
@@ -48,7 +60,7 @@ class Camera(
         pitchDelta: Float
     ) {
         yaw += yawDelta
-        pitch = 20f.coerceAtLeast(89f.coerceAtMost(pitch + pitchDelta)) // Clamp pitch to avoid flipping
+        pitch = 20f.coerceAtLeast(90f.coerceAtMost(pitch + pitchDelta)) // Clamp pitch to avoid flipping
     }
 
     fun getViewMatrix(): FloatArray {

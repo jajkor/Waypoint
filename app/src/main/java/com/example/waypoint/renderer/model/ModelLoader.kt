@@ -1,7 +1,7 @@
 package com.example.waypoint.renderer.model
 
 import android.content.Context
-import com.example.waypoint.renderer.Vector3
+import com.example.waypoint.Vector3
 import de.javagl.obj.FloatTuple
 import de.javagl.obj.MtlReader
 import de.javagl.obj.ObjData

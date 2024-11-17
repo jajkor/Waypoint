@@ -1,25 +1,24 @@
 package com.example.waypoint.renderer
 
-import android.opengl.GLES32.GL_FRAGMENT_SHADER
-import android.opengl.GLES32.GL_GEOMETRY_SHADER
-import android.opengl.GLES32.GL_VERTEX_SHADER
-import android.opengl.GLES32.glAttachShader
-import android.opengl.GLES32.glCompileShader
-import android.opengl.GLES32.glCreateProgram
-import android.opengl.GLES32.glCreateShader
-import android.opengl.GLES32.glDeleteShader
-import android.opengl.GLES32.glGetUniformLocation
-import android.opengl.GLES32.glLinkProgram
-import android.opengl.GLES32.glShaderSource
-import android.opengl.GLES32.glUniform1f
-import android.opengl.GLES32.glUniform3f
-import android.opengl.GLES32.glUniformMatrix4fv
-import android.opengl.GLES32.glUseProgram
+import android.opengl.GLES30.GL_FRAGMENT_SHADER
+import android.opengl.GLES30.GL_VERTEX_SHADER
+import android.opengl.GLES30.glAttachShader
+import android.opengl.GLES30.glCompileShader
+import android.opengl.GLES30.glCreateProgram
+import android.opengl.GLES30.glCreateShader
+import android.opengl.GLES30.glDeleteShader
+import android.opengl.GLES30.glGetUniformLocation
+import android.opengl.GLES30.glLinkProgram
+import android.opengl.GLES30.glShaderSource
+import android.opengl.GLES30.glUniform1f
+import android.opengl.GLES30.glUniform3f
+import android.opengl.GLES30.glUniformMatrix4fv
+import android.opengl.GLES30.glUseProgram
+import com.example.waypoint.Vector3
 
 class Program(
     vertexShaderCode: String?,
-    fragmentShaderCode: String?,
-    geometryShaderCode: String? = null
+    fragmentShaderCode: String?
 ) {
     private var id: Int
 
@@ -27,9 +26,6 @@ class Program(
         val shaders = mutableListOf<Int>()
         shaders.add(loadShader(GL_VERTEX_SHADER, vertexShaderCode))
         shaders.add(loadShader(GL_FRAGMENT_SHADER, fragmentShaderCode))
-        if (geometryShaderCode != null) {
-            shaders.add(loadShader(GL_GEOMETRY_SHADER, geometryShaderCode))
-        }
 
         // create empty OpenGL ES Program
         id =
