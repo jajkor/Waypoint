@@ -124,7 +124,15 @@ class MapRenderer(
                 Uniform("specularColor", GL_FLOAT_VEC3, userModel.getMaterial().specularColor),
                 Uniform("specularComponent", GL_FLOAT, userModel.getMaterial().specularComponent)
             )
-        drawModel(userModel, campusShader, userUniforms, GL_TRIANGLES, Vector3(0.25f, 0.25f, 0.25f), Vector3(0.0f, 4.0f, 0.0f))
+
+        drawModel(
+            userModel,
+            campusShader,
+            userUniforms,
+            GL_TRIANGLES,
+            Vector3(1f, 1f, 1f),
+            Vector3(camera.getPivot().x, 1f, camera.getPivot().z)
+        )
     }
 
     private fun drawModel(
@@ -152,6 +160,18 @@ class MapRenderer(
         }
 
         model.draw(primitiveType)
+    }
+
+    fun updateCameraPivot(newPivot: Vector3) {
+        camera.setPivot(newPivot)
+    }
+
+    fun setPitch(pitch: Float) {
+        camera.setPitch(pitch)
+    }
+
+    fun setFreeLook(freeLook: Boolean) {
+        camera.setFreeLook(freeLook)
     }
 
     override fun onSurfaceChanged(

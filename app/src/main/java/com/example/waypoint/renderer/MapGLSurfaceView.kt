@@ -3,11 +3,9 @@ package com.example.waypoint.renderer
 import android.annotation.SuppressLint
 import android.content.Context
 import android.opengl.GLSurfaceView
-import android.util.Log
 import android.view.GestureDetector
 import android.view.MotionEvent
 import android.view.ScaleGestureDetector
-import com.example.waypoint.Vector2
 import com.example.waypoint.renderer.scene.Camera
 
 class MapGLSurfaceView(
@@ -33,10 +31,7 @@ class MapGLSurfaceView(
         scaleGestureDetector = ScaleGestureDetector(context, ScaleListener())
     }
 
-    fun updatePosition(position: Vector2) {
-        // camera.setPivot(Vector3(position.x.toFloat(), 0.0f, position.y.toFloat()))
-        Log.v("POS", position.toString())
-    }
+    fun getRenderer() = renderer
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onTouchEvent(event: MotionEvent): Boolean {
