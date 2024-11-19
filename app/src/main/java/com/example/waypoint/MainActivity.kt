@@ -14,7 +14,6 @@ import com.example.waypoint.location.WifiScanner
 import com.example.waypoint.renderer.MapGLSurfaceView
 import com.example.waypoint.renderer.MapRenderer
 import com.google.android.material.button.MaterialButton
-import com.example.waypoint.R
 import kotlinx.coroutines.launch
 import org.json.JSONObject
 
@@ -56,7 +55,7 @@ class MainActivity : AppCompatActivity() {
             ActivityCompat.requestPermissions(
                 this,
                 arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
-                PERMISSION_REQUEST_CODE,
+                PERMISSION_REQUEST_CODE
             )
         }
 

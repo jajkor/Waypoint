@@ -22,7 +22,7 @@ class ComposeActivity : ComponentActivity() {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     greeting(
                         name = "Android",
-                        modifier = Modifier.padding(innerPadding),
+                        modifier = Modifier.padding(innerPadding)
                     )
                 }
             }
@@ -33,11 +33,11 @@ class ComposeActivity : ComponentActivity() {
 @Composable
 fun greeting(
     name: String,
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier
 ) {
     Text(
         text = "Hello $name!",
-        modifier = modifier,
+        modifier = modifier
     )
 }
 

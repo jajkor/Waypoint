@@ -18,6 +18,7 @@ import android.opengl.GLES30.glEnable
 import android.opengl.GLES30.glViewport
 import android.opengl.GLSurfaceView
 import android.opengl.Matrix
+import com.example.waypoint.R
 import com.example.waypoint.Vector3
 import com.example.waypoint.readRawTextFile
 import com.example.waypoint.renderer.model.Model
@@ -25,7 +26,6 @@ import com.example.waypoint.renderer.model.ModelLoader
 import com.example.waypoint.renderer.model.Uniform
 import com.example.waypoint.renderer.scene.Camera
 import com.example.waypoint.renderer.scene.Light
-import com.example.waypoint.R
 import javax.microedition.khronos.egl.EGLConfig
 import javax.microedition.khronos.opengles.GL10
 

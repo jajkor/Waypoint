@@ -23,7 +23,7 @@ class Model(
     private val normals: FloatBuffer,
     private val texCoords: FloatBuffer,
     private val indices: IntBuffer,
-    private val material: Material,
+    private val material: Material
 ) {
     private val vertexBuffer: IntArray = IntArray(1)
     private val normalBuffer: IntArray = IntArray(1)

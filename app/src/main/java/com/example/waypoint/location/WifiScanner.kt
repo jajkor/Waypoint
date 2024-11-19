@@ -12,19 +12,19 @@ import kotlin.math.abs
 import kotlin.math.pow
 
 class WifiScanner(
-    private val context: Context,
+    private val context: Context
 ) {
     private val wifiManager = context.getSystemService(Context.WIFI_SERVICE) as WifiManager
 
     fun hasRequiredPermissions(): Boolean =
         ActivityCompat.checkSelfPermission(
             context,
-            Manifest.permission.ACCESS_FINE_LOCATION,
+            Manifest.permission.ACCESS_FINE_LOCATION
         ) == PackageManager.PERMISSION_GRANTED &&
             ActivityCompat.checkSelfPermission(
-                context,
-                Manifest.permission.ACCESS_WIFI_STATE,
-            ) == PackageManager.PERMISSION_GRANTED
+            context,
+            Manifest.permission.ACCESS_WIFI_STATE
+        ) == PackageManager.PERMISSION_GRANTED
 
     @Suppress("MissingPermission")
     fun scanWifi(knownAccessPoints: List<AccessPoint>): Flow<Vector2> =
@@ -41,7 +41,7 @@ class WifiScanner(
                 val scanResults =
                     if (ActivityCompat.checkSelfPermission(
                             context,
-                            Manifest.permission.ACCESS_FINE_LOCATION,
+                            Manifest.permission.ACCESS_FINE_LOCATION
                         ) == PackageManager.PERMISSION_GRANTED
                     ) {
                         wifiManager.scanResults
@@ -69,7 +69,7 @@ class WifiScanner(
 
     private fun calculatePosition(
         readings: Map<String, Int>,
-        knownAccessPoints: List<AccessPoint>,
+        knownAccessPoints: List<AccessPoint>
     ): Vector2 {
         val distances =
             readings.map { (bssid, rssi) ->
@@ -84,7 +84,7 @@ class WifiScanner(
     private fun calculateDistance(
         rssi: Int,
         referenceRSSI: Int,
-        environmentalFactor: Double,
+        environmentalFactor: Double
     ): Double = 10.0.pow((abs(referenceRSSI) - abs(rssi)) / (10 * environmentalFactor))
 }
 
