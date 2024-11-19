@@ -1,0 +1,7 @@
+sdk.dir=/Users/sarimkazmi/Library/Android/sdk
+
+ls /Users/sarimkazmi/Library/Android/sdk
+
+sudo chmod -R 755 ~/Library/Android
+
+

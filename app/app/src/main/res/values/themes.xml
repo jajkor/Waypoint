@@ -1,0 +1,50 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Base.Theme.GuideMe" parent="Theme.Material3.Light.NoActionBar">
+        <!-- Customize your light theme here. -->
+        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <item name="colorPrimary">@color/penn_state_blue</item>
+        <item name="colorPrimaryVariant">@color/penn_state_blue_dark</item>
+        <item name="colorOnPrimary">@color/penn_state_white</item>
+
+        <!-- Secondary brand color -->
+        <item name="colorSecondary">@color/penn_state_blue</item>
+        <item name="colorSecondaryVariant">@color/penn_state_blue_dark</item>
+        <item name="colorOnSecondary">@color/penn_state_white</item>
+
+        <!-- Status bar color -->
+        <item name="android:statusBarColor">@color/penn_state_blue</item>
+
+        <!-- Customize your theme here -->
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="toolbarStyle">@style/Widget.Waypoint.Toolbar</item>
+    </style>
+
+    <style name="Theme.GuideMe" parent="Base.Theme.GuideMe" />
+
+    <!-- Base application theme -->
+    <style name="Theme.Waypoint" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <!-- Primary brand color -->
+        <item name="colorPrimary">@color/penn_state_blue</item>
+        <item name="colorPrimaryVariant">@color/penn_state_blue_dark</item>
+        <item name="colorOnPrimary">@color/penn_state_white</item>
+
+        <!-- Secondary brand color -->
+        <item name="colorSecondary">@color/penn_state_blue</item>
+        <item name="colorSecondaryVariant">@color/penn_state_blue_dark</item>
+        <item name="colorOnSecondary">@color/penn_state_white</item>
+
+        <!-- Status bar color -->
+        <item name="android:statusBarColor">@color/penn_state_blue</item>
+
+        <!-- Customize your theme here -->
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="toolbarStyle">@style/Widget.Waypoint.Toolbar</item>
+    </style>
+
+    <!-- Custom Toolbar style -->
+    <style name="Widget.Waypoint.Toolbar" parent="Widget.MaterialComponents.Toolbar.Primary">
+        <item name="android:background">@color/penn_state_blue</item>
+        <item name="titleTextColor">@color/penn_state_white</item>
+    </style>
+</resources>

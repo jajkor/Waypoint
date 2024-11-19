@@ -1,0 +1,28 @@
+{
+  "access-points": [
+    {
+      "ssid": "Verizon Router",
+      "bssid": "78:67:0e:71:75:d9",
+      "xPos": 0.0,
+      "yPos": 0.0,
+      "referenceRSSI": -45,
+      "environmentalFactor": 2.2
+    },
+    {
+      "ssid": "Verizon Extender",
+      "bssid": "3c:bd:c5:cb:26:83",
+      "xPos": 4.7244,
+      "yPos": 9.2964,
+      "referenceRSSI": -55,
+      "environmentalFactor": 2.8
+    },
+    {
+      "ssid": "TP-Link Extender",
+      "bssid": "f0:09:0d:8c:7e:26",
+      "xPos": 17.9832,
+      "yPos": 3.5052,
+      "referenceRSSI": -55,
+      "environmentalFactor": 2.8
+    }
+  ]
+}
