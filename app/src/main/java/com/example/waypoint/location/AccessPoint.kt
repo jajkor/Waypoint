@@ -7,7 +7,7 @@ data class AccessPoint(
     val bssid: String,
     val position: Vector2,
     val referenceRSSI: Int,
-    val environmentalFactor: Double,
+    val environmentalFactor: Double
 ) {
     companion object {
         fun fromJson(json: Map<String, Any>): AccessPoint =
@@ -15,12 +15,12 @@ data class AccessPoint(
                 ssid = json["ssid"] as String,
                 bssid = json["bssid"] as String,
                 position =
-                    Vector2(
-                        (json["xPos"] as Number).toFloat(),
-                        (json["yPos"] as Number).toFloat(),
-                    ),
+                Vector2(
+                    (json["xPos"] as Number).toFloat(),
+                    (json["yPos"] as Number).toFloat()
+                ),
                 referenceRSSI = (json["referenceRSSI"] as Number).toInt(),
-                environmentalFactor = (json["environmentalFactor"] as Number).toDouble(),
+                environmentalFactor = (json["environmentalFactor"] as Number).toDouble()
             )
     }
 }

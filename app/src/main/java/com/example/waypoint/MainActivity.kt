@@ -55,7 +55,7 @@ class MainActivity : AppCompatActivity() {
             ActivityCompat.requestPermissions(
                 this,
                 arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
-                PERMISSION_REQUEST_CODE,
+                PERMISSION_REQUEST_CODE
             )
         }
 
