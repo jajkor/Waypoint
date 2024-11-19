@@ -1,5 +1,16 @@
 <resources>
     <string name="app_name">Waypoint</string>
+    <string name="lares_full_image">Lares Full Image</string>
+    <string name="rydal_image">Rydal Image</string>
+    <string name="rydal">Rydal</string>
+    <string name="lares_image">Lares Image</string>
+    <string name="lares">Lares</string>
+    <string name="woodland_image">Woodland Image</string>
+    <string name="woodland">Woodland</string>
+    <string name="sutherland_image">Sutherland Image</string>
+    <string name="sutherland">Sutherland</string>
+
     <string name="back_button">Back</string>
     <string name="campus_name">Rydal Executive Plaza</string>
+    <string name="title_activity_compose">ComposeActivity</string>
 </resources>

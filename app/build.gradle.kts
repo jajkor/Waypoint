@@ -1,7 +1,6 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
-    id("org.jlleitschuh.gradle.ktlint") version "11.5.0"
 }
 
 android {
@@ -37,7 +36,9 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
+
     buildFeatures {
+        viewBinding = true
         compose = true
     }
     composeOptions {

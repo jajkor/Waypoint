@@ -14,6 +14,7 @@ import com.example.waypoint.location.WifiScanner
 import com.example.waypoint.renderer.MapGLSurfaceView
 import com.example.waypoint.renderer.MapRenderer
 import com.google.android.material.button.MaterialButton
+import com.example.waypoint.R
 import kotlinx.coroutines.launch
 import org.json.JSONObject
 
