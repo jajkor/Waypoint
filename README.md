@@ -3,7 +3,7 @@
 ![Build Status](https://img.shields.io/github/actions/workflow/status/jajkor/Waypoint/main.yml) ![License](https://img.shields.io/github/license/jajkor/Waypoint) ![Min API Level](https://img.shields.io/badge/min--api-24-brightgreen) ![OpenGL ES 3.2](https://img.shields.io/badge/OpenGL--ES-3.2-blue) ![Last Commit](https://img.shields.io/github/last-commit/jajkor/Waypoint) ![GitHub issues](https://img.shields.io/github/issues/jajkor/Waypoint)
 
 ## Overview
-
+## change1
 **Waypoint** is a 3D indoor navigation application designed to help students, visitors, and faculty of Penn State Abington navigate the campus with ease. The app features a 3D representation of the campus, real-time pathfinding, and intuitive guidance to important locations such as classrooms, offices, and common areas.
 
 - **3D Campus Visualization**: View an accurate, interactive 3D model of the Penn State Abington campus.
